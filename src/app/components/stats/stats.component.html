@@ -1,0 +1,33 @@
+<section class="stats section" id="stats">
+  <div class="container">
+    <!-- Stats Grid — numbers speak -->
+    <div class="stats-grid">
+      <div class="stat-card glass-card"
+           *ngFor="let stat of stats; let i = index"
+           [class.visible]="isVisible"
+           [style.--stat-delay]="(i * 0.15) + 's'"
+           [style.--stat-color]="stat.color">
+        <!-- Icon -->
+        <div class="stat-icon-ring">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path [attr.d]="stat.svgPath"/>
+          </svg>
+        </div>
+
+        <!-- BIG Value -->
+        <div class="stat-value">
+          <span>{{ stat.value }}</span>
+          <span class="stat-suffix">{{ stat.suffix }}</span>
+        </div>
+
+        <!-- Short Label -->
+        <p class="stat-label">{{ lang.t(stat.labelKey) }}</p>
+
+        <!-- Decorative bar -->
+        <div class="stat-bar">
+          <div class="stat-bar-fill" [class.animate]="isVisible" [style.background]="stat.color"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

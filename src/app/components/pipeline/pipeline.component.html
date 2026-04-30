@@ -1,0 +1,87 @@
+<section class="pipeline section" id="pipeline">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="section-header">
+      <h2 class="section-title">{{ lang.t('pipeline.title') }}</h2>
+    </div>
+
+    <!-- Storytelling Track -->
+    <div class="story-track" [class.visible]="isVisible">
+
+      <!-- ── SVG Connection Path (Desktop) ── -->
+      <svg class="connection-svg" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
+        <!-- Background path -->
+        <path class="connection-path-bg"
+              d="M 60 30 C 200 30, 250 10, 360 30 S 520 50, 640 30 S 800 10, 900 30 S 1060 50, 1140 30"
+              fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="3" stroke-linecap="round"/>
+        <!-- Animated fill path -->
+        <path class="connection-path-fill" [class.animate]="isVisible"
+              d="M 60 30 C 200 30, 250 10, 360 30 S 520 50, 640 30 S 800 10, 900 30 S 1060 50, 1140 30"
+              fill="none" stroke="url(#pathGradient)" stroke-width="3"
+              stroke-linecap="round" stroke-dasharray="6 8"/>
+        <!-- Traveling dot -->
+        <circle class="traveling-dot" [class.animate]="isVisible" r="6" fill="url(#dotGradient)">
+          <animateMotion dur="4s" repeatCount="indefinite" begin="0.5s"
+                         path="M 60 30 C 200 30, 250 10, 360 30 S 520 50, 640 30 S 800 10, 900 30 S 1060 50, 1140 30"
+                         keyPoints="0;1" keyTimes="0;1" calcMode="spline" keySplines="0.4 0 0.2 1"/>
+        </circle>
+        <!-- Gradients -->
+        <defs>
+          <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#e68a3a"/>
+            <stop offset="33%" stop-color="#e05555"/>
+            <stop offset="66%" stop-color="#3da5c2"/>
+            <stop offset="100%" stop-color="#4caf50"/>
+          </linearGradient>
+          <radialGradient id="dotGradient">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="60%" stop-color="#66bb6a"/>
+            <stop offset="100%" stop-color="#4caf50"/>
+          </radialGradient>
+        </defs>
+      </svg>
+
+      <!-- ── Mobile Timeline Line ── -->
+      <div class="timeline-line-mobile">
+        <div class="timeline-line-bg"></div>
+        <div class="timeline-line-fill" [class.animate]="isVisible"></div>
+        <div class="timeline-dot-mobile" [class.animate]="isVisible"></div>
+      </div>
+
+      <!-- ── Story Cards ── -->
+      <div class="story-cards">
+        <div class="story-card"
+             *ngFor="let step of steps; let i = index"
+             [class.visible]="isVisible"
+             [style.--card-delay]="(i * 0.2) + 's'"
+             [style.--accent]="step.accentColor"
+             [style.--accent-glow]="step.accentGlow">
+
+          <!-- Decorative step number -->
+          <span class="card-step-num" aria-hidden="true">{{ i + 1 }}</span>
+
+          <!-- Illustration hero area -->
+          <div class="card-illustration">
+            <div class="illustration-glow"></div>
+            <img [src]="step.image"
+                 [alt]="lang.t(step.titleKey)"
+                 class="illustration-img"
+                 loading="lazy">
+          </div>
+
+          <!-- Card bottom: badge + title -->
+          <div class="card-footer">
+            <div class="step-badge">
+              <span class="badge-number">{{ i + 1 }}</span>
+            </div>
+            <h3 class="card-title">{{ lang.t(step.titleKey) }}</h3>
+          </div>
+
+          <!-- Hover accent border glow -->
+          <div class="card-border-glow"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

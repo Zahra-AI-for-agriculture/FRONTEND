@@ -1,0 +1,126 @@
+/* ═══════════════════════════════════════════
+   CTA Component — Big clear buttons
+   ═══════════════════════════════════════════ */
+
+.cta-section {
+  background: var(--color-dark-green-1);
+  position: relative;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+}
+
+/* ── Wrapper ── */
+.cta-wrapper {
+  position: relative;
+  padding: 100px 48px;
+  background: linear-gradient(135deg,
+    rgba(15, 47, 31, 0.8) 0%,
+    rgba(31, 77, 46, 0.6) 50%,
+    rgba(15, 47, 31, 0.8) 100%
+  );
+  border: 1px solid rgba(76, 175, 80, 0.15);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.cta-wrapper.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ── Background Glows ── */
+.cta-bg-effects {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cta-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+}
+
+.cta-glow-1 {
+  width: 300px;
+  height: 300px;
+  background: rgba(76, 175, 80, 0.15);
+  top: -100px;
+  left: -50px;
+  animation: float 8s ease-in-out infinite;
+}
+
+.cta-glow-2 {
+  width: 250px;
+  height: 250px;
+  background: rgba(249, 168, 37, 0.1);
+  bottom: -100px;
+  right: -50px;
+  animation: float 8s ease-in-out infinite reverse;
+}
+
+/* ── Content ── */
+.cta-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.cta-title {
+  font-size: var(--font-size-5xl);
+  font-weight: 900;
+  color: var(--color-white);
+  line-height: 1.1;
+}
+
+/* ── Buttons — VERY BIG ── */
+.cta-buttons {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-xl {
+  padding: 22px 48px;
+  font-size: var(--font-size-xl);
+  border-radius: var(--radius-md);
+  min-height: 68px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .cta-wrapper {
+    padding: 64px 24px;
+  }
+
+  .cta-title {
+    font-size: var(--font-size-4xl);
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .btn-xl {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,93 @@
+<section class="hero" id="hero">
+  <!-- Background layers -->
+  <div class="hero-bg">
+    <video class="hero-bg-video"
+           src="assets/videos/hero-bg.mp4"
+           poster="assets/images/hero-bg.png"
+           autoplay muted loop playsinline
+           preload="auto"
+           aria-hidden="true">
+    </video>
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-bg-gradient"></div>
+  </div>
+
+  <!-- Floating orbs (no emojis, pure CSS) -->
+  <div class="orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="hero-container container" [class.visible]="isVisible">
+    <div class="hero-content">
+      <!-- Badge -->
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span>{{ lang.t('hero.badge') }}</span>
+      </div>
+
+      <!-- Headline — VERY SHORT -->
+      <h1 class="hero-title">{{ lang.t('hero.headline') }}</h1>
+
+      <!-- Subheadline — action-based -->
+      <p class="hero-subtitle">{{ lang.t('hero.subheadline') }}</p>
+
+      <!-- CTAs — BIG buttons -->
+      <div class="hero-ctas">
+        <button class="btn btn-primary btn-hero" (click)="scrollTo('cta-section')" id="hero-cta-main">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+          <span>{{ lang.t('hero.cta') }}</span>
+        </button>
+        <button class="btn btn-secondary btn-hero" (click)="scrollTo('pipeline')" id="hero-cta-demo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polygon points="10 8 16 12 10 16 10 8"/>
+          </svg>
+          <span>{{ lang.t('hero.cta_secondary') }}</span>
+        </button>
+      </div>
+
+      <!-- Trust indicators — icons only, no emojis -->
+      <div class="hero-trust">
+        <div class="trust-item">
+          <svg class="trust-icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <span>{{ lang.lang === 'fr' ? 'Sécurisé' : 'آمن' }}</span>
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-item">
+          <svg class="trust-icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <span>{{ lang.lang === 'fr' ? 'Gratuit' : 'مجّاني' }}</span>
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-item">
+          <svg class="trust-icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          <span>{{ lang.lang === 'fr' ? 'Tunisien' : 'تونسي' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- App Mockup -->
+    <div class="hero-mockup">
+      <div class="mockup-glow"></div>
+      <img src="assets/images/app-mockup.png" alt="ZAHRA" class="mockup-image" loading="eager">
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="scroll-indicator" (click)="scrollTo('pipeline')">
+    <div class="scroll-mouse">
+      <div class="scroll-dot"></div>
+    </div>
+  </div>
+</section>

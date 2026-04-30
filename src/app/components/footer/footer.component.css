@@ -1,0 +1,124 @@
+/* ═══════════════════════════════════════════
+   Footer Component — Minimal
+   ═══════════════════════════════════════════ */
+
+.footer {
+  background: var(--color-dark-green-1);
+  padding: 48px 0 24px;
+  position: relative;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+}
+
+/* ── Content ── */
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+/* ── Brand ── */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  width: fit-content;
+}
+
+.footer-logo:hover {
+  opacity: 0.8;
+}
+
+.footer-leaf {
+  width: 28px;
+  height: 28px;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, var(--color-light-green), var(--color-accent-green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logo-arabic {
+  font-size: 14px;
+  color: var(--color-gray-400);
+}
+
+.footer-tagline {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-400);
+  max-width: 300px;
+  line-height: 1.6;
+}
+
+/* ── Nav ── */
+.footer-nav {
+  display: flex;
+  gap: 28px;
+}
+
+.footer-nav a {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-400);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  font-weight: 500;
+}
+
+.footer-nav a:hover {
+  color: var(--color-accent-green);
+}
+
+/* ── Bottom ── */
+.footer-bottom {
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+}
+
+.footer-copyright {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-400);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    gap: 24px;
+    text-align: center;
+    align-items: center;
+  }
+
+  .footer-brand {
+    align-items: center;
+  }
+
+  .footer-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+}

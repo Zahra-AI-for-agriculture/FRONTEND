@@ -1,0 +1,137 @@
+/* ═══════════════════════════════════════════
+   Stats Component — Big numbers, no text
+   ═══════════════════════════════════════════ */
+
+.stats {
+  background: linear-gradient(180deg,
+    var(--color-dark-green-1) 0%,
+    var(--color-dark-green-2) 100%
+  );
+  position: relative;
+}
+
+.stats::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+}
+
+/* ── Grid ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* ── Card ── */
+.stat-card {
+  text-align: center;
+  padding: 48px 24px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out,
+              background 0.3s ease, border-color 0.3s ease;
+  transition-delay: var(--stat-delay);
+}
+
+.stat-card.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.stat-card:hover {
+  border-color: var(--stat-color);
+  box-shadow: 0 0 40px rgba(76, 175, 80, 0.12);
+}
+
+/* Icon Ring */
+.stat-icon-ring {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  transition: var(--transition-base);
+  color: var(--stat-color);
+}
+
+.stat-card:hover .stat-icon-ring {
+  border-color: var(--stat-color);
+  transform: scale(1.1);
+}
+
+/* Value — HUGE for impact */
+.stat-value {
+  font-size: var(--font-size-5xl);
+  font-weight: 900;
+  color: var(--color-white);
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.stat-suffix {
+  font-size: var(--font-size-3xl);
+  color: var(--color-accent-green);
+}
+
+/* Label — short */
+.stat-label {
+  font-size: var(--font-size-base);
+  color: var(--color-gray-200);
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Decorative bar */
+.stat-bar {
+  width: 60px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.stat-bar-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 2px;
+  transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: var(--stat-delay);
+}
+
+.stat-bar-fill.animate {
+  width: 100%;
+}
+
+/* ── Responsive ── */
+@media (max-width: 968px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .stat-card {
+    padding: 36px 16px;
+  }
+
+  .stat-value {
+    font-size: var(--font-size-4xl);
+  }
+}

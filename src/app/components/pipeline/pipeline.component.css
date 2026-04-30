@@ -1,0 +1,458 @@
+/* ═══════════════════════════════════════════════════════════
+   Pipeline — Illustrated Storytelling (Dribbble-level)
+   Comic-strip layout with mascot illustrations and
+   animated SVG connections
+   ═══════════════════════════════════════════════════════════ */
+
+.pipeline {
+  background:
+    radial-gradient(ellipse at 30% 0%, rgba(76, 175, 80, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 100%, rgba(249, 168, 37, 0.04) 0%, transparent 50%),
+    linear-gradient(180deg,
+      var(--color-dark-green-1) 0%,
+      var(--color-dark-green-2) 50%,
+      var(--color-dark-green-1) 100%
+    );
+  overflow: hidden;
+}
+
+/* ────────────────────────────────────
+   Story Track Container
+   ──────────────────────────────────── */
+.story-track {
+  position: relative;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.story-track.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ────────────────────────────────────
+   Desktop SVG Connection Path
+   ──────────────────────────────────── */
+.connection-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 60px;
+  z-index: 0;
+  pointer-events: none;
+  /* Shift to vertically center over the cards row */
+  transform: translateY(200px);
+}
+
+.connection-path-bg {
+  opacity: 0.6;
+}
+
+.connection-path-fill {
+  stroke-dashoffset: 1200;
+  transition: stroke-dashoffset 3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.connection-path-fill.animate {
+  stroke-dashoffset: 0;
+}
+
+.traveling-dot {
+  opacity: 0;
+  filter: drop-shadow(0 0 6px rgba(102, 187, 106, 0.7));
+  transition: opacity 0.6s ease;
+}
+
+.traveling-dot.animate {
+  opacity: 1;
+}
+
+/* ────────────────────────────────────
+   Mobile Timeline (Vertical)
+   ──────────────────────────────────── */
+.timeline-line-mobile {
+  display: none;
+}
+
+/* ────────────────────────────────────
+   Story Cards Grid
+   ──────────────────────────────────── */
+.story-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ────────────────────────────────────
+   Individual Story Card
+   ──────────────────────────────────── */
+.story-card {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+
+  /* Entrance animation */
+  opacity: 0;
+  transform: translateY(50px) scale(0.94);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+  transition-delay: var(--card-delay);
+}
+
+.story-card.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ── Hover state ── */
+.story-card:hover {
+  border-color: var(--accent);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.3),
+    0 0 0 1px var(--accent),
+    0 0 60px var(--accent-glow);
+  transform: translateY(-10px) scale(1.02) !important;
+}
+
+/* ────────────────────────────────────
+   Decorative Step Number (background)
+   ──────────────────────────────────── */
+.card-step-num {
+  position: absolute;
+  top: -10px;
+  right: 12px;
+  font-size: 140px;
+  font-weight: 900;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.025);
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
+  transition: color 0.4s ease;
+}
+
+[dir="rtl"] .card-step-num {
+  right: auto;
+  left: 12px;
+}
+
+.story-card:hover .card-step-num {
+  color: rgba(255, 255, 255, 0.05);
+}
+
+/* ────────────────────────────────────
+   Illustration Area (~60% of card)
+   ──────────────────────────────────── */
+.card-illustration {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Accent glow behind illustration */
+.illustration-glow {
+  position: absolute;
+  inset: 20%;
+  background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+  filter: blur(40px);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 0;
+}
+
+.story-card:hover .illustration-glow {
+  opacity: 1;
+}
+
+/* The illustration image */
+.illustration-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  z-index: 1;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.story-card:hover .illustration-img {
+  transform: scale(1.06);
+}
+
+/* Gradient fade at bottom of illustration into card bg */
+.card-illustration::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(
+    to top,
+    rgba(10, 31, 20, 0.95) 0%,
+    rgba(10, 31, 20, 0.5) 40%,
+    transparent 100%
+  );
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ────────────────────────────────────
+   Card Footer (badge + title)
+   ──────────────────────────────────── */
+.card-footer {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 24px 28px;
+  /* Overlap the gradient fade slightly */
+  margin-top: -48px;
+}
+
+/* Step badge — small colored pill */
+.step-badge {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px var(--accent-glow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.story-card:hover .step-badge {
+  transform: scale(1.15);
+  box-shadow: 0 6px 24px var(--accent-glow);
+}
+
+.badge-number {
+  font-size: var(--font-size-sm);
+  font-weight: 800;
+  color: var(--color-white);
+  line-height: 1;
+}
+
+/* Card title — 2-3 words */
+.card-title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-white);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+/* ────────────────────────────────────
+   Hover Border Glow (decorative)
+   ──────────────────────────────────── */
+.card-border-glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius-xl);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  background: linear-gradient(
+    135deg,
+    var(--accent-glow),
+    transparent 40%,
+    transparent 60%,
+    var(--accent-glow)
+  );
+  z-index: -1;
+}
+
+.story-card:hover .card-border-glow {
+  opacity: 0.6;
+}
+
+/* ════════════════════════════════════
+   RESPONSIVE — Tablet
+   ════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .story-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .connection-svg {
+    display: none;
+  }
+
+  .card-step-num {
+    font-size: 110px;
+  }
+}
+
+/* ════════════════════════════════════
+   RESPONSIVE — Mobile
+   ════════════════════════════════════ */
+@media (max-width: 640px) {
+  .pipeline {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
+  .connection-svg {
+    display: none;
+  }
+
+  .story-cards {
+    grid-template-columns: 1fr;
+    gap: 0;
+    position: relative;
+    padding-left: 44px;
+  }
+
+  [dir="rtl"] .story-cards {
+    padding-left: 0;
+    padding-right: 44px;
+  }
+
+  /* ── Mobile Timeline Line ── */
+  .timeline-line-mobile {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 16px;
+    width: 4px;
+    z-index: 0;
+  }
+
+  [dir="rtl"] .timeline-line-mobile {
+    left: auto;
+    right: 16px;
+  }
+
+  .timeline-line-bg {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+  }
+
+  .timeline-line-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    background: linear-gradient(180deg,
+      #e68a3a 0%,
+      #e05555 33%,
+      #3da5c2 66%,
+      #4caf50 100%
+    );
+    border-radius: 4px;
+    transition: height 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .timeline-line-fill.animate {
+    height: 100%;
+  }
+
+  /* Mobile traveling dot */
+  .timeline-dot-mobile {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    background: var(--color-white);
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(102, 187, 106, 0.6);
+    top: 0;
+    opacity: 0;
+    z-index: 2;
+  }
+
+  .timeline-dot-mobile.animate {
+    opacity: 1;
+    animation: travelDown 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes travelDown {
+    0% { top: 0; }
+    100% { top: 100%; }
+  }
+
+  /* Mobile card adjustments */
+  .story-card {
+    border-radius: var(--radius-lg);
+    margin-bottom: 24px;
+  }
+
+  .story-card::before {
+    content: '';
+    position: absolute;
+    top: 40px;
+    left: -28px;
+    width: 20px;
+    height: 2px;
+    background: linear-gradient(to right, var(--accent), transparent);
+    z-index: 3;
+  }
+
+  [dir="rtl"] .story-card::before {
+    left: auto;
+    right: -28px;
+    background: linear-gradient(to left, var(--accent), transparent);
+  }
+
+  .card-illustration {
+    aspect-ratio: 4 / 3;
+  }
+
+  .card-step-num {
+    font-size: 90px;
+    top: -6px;
+  }
+
+  .card-footer {
+    padding: 0 20px 24px;
+    margin-top: -40px;
+  }
+
+  .card-title {
+    font-size: var(--font-size-lg);
+  }
+
+  .step-badge {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+  }
+
+  .badge-number {
+    font-size: var(--font-size-xs);
+  }
+}
+
+/* ════════════════════════════════════
+   RTL Adjustments
+   ════════════════════════════════════ */
+[dir="rtl"] .connection-svg {
+  transform: translateY(200px) scaleX(-1);
+}

@@ -1,0 +1,34 @@
+<section class="features section" id="features">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="section-header">
+      <h2 class="section-title">{{ lang.t('features.title') }}</h2>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="features-grid">
+      <div class="feature-card glass-card"
+           *ngFor="let feature of features; let i = index"
+           [class.visible]="isVisible"
+           [style.--card-delay]="(i * 0.12) + 's'"
+           [style.--card-gradient]="feature.gradient"
+           [style.--icon-color]="feature.iconColor">
+        <!-- Icon -->
+        <div class="feature-icon-wrapper">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path [attr.d]="feature.svgPath"/>
+          </svg>
+        </div>
+
+        <!-- Title — short -->
+        <h3 class="feature-title">{{ lang.t(feature.titleKey) }}</h3>
+
+        <!-- Action — 2-3 words -->
+        <p class="feature-action">{{ lang.t(feature.actionKey) }}</p>
+
+        <!-- Hover glow -->
+        <div class="feature-glow"></div>
+      </div>
+    </div>
+  </div>
+</section>

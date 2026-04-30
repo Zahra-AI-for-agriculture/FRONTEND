@@ -1,0 +1,10 @@
+/* App root - minimal styles */
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.rtl {
+  direction: rtl;
+  text-align: right;
+}

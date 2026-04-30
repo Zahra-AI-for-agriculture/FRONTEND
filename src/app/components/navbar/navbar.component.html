@@ -1,0 +1,56 @@
+<nav class="navbar" [class.scrolled]="isScrolled" id="navbar">
+  <div class="nav-container">
+    <!-- Logo -->
+    <a class="nav-logo" (click)="scrollTo('hero')">
+      <svg class="logo-leaf" width="32" height="32" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C6.5 2 2 6.5 2 12c0 3.5 1.8 6.6 4.5 8.4C7 17 8.5 14 12 14s5 3 5.5 6.4C20.2 18.6 22 15.5 22 12c0-5.5-4.5-10-10-10z" fill="url(#leafGrad)"/>
+        <path d="M12 2c0 5 2 8 6 10-4 0-7 2-9 6-1-4-3-6-7-6 4-2 6-5 6-10h4z" fill="rgba(255,255,255,0.25)"/>
+        <defs>
+          <linearGradient id="leafGrad" x1="0" y1="0" x2="24" y2="24">
+            <stop offset="0%" stop-color="#4caf50"/>
+            <stop offset="100%" stop-color="#66bb6a"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span class="logo-text">ZAHRA</span>
+      <span class="logo-arabic">زهرة</span>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <ul class="nav-links">
+      <li><a (click)="scrollTo('pipeline')">{{ lang.t('nav.solution') }}</a></li>
+      <li><a (click)="scrollTo('features')">{{ lang.t('nav.features') }}</a></li>
+      <li><a (click)="scrollTo('stats')">{{ lang.t('nav.stats') }}</a></li>
+      <li><a (click)="scrollTo('cta-section')">{{ lang.t('nav.contact') }}</a></li>
+    </ul>
+
+    <!-- Right Actions -->
+    <div class="nav-actions">
+      <!-- Language Toggle -->
+      <button class="lang-toggle" (click)="lang.toggleLanguage()" id="lang-toggle" aria-label="Toggle language">
+        <span class="lang-option" [class.active]="lang.lang === 'ar'">عربي</span>
+        <span class="lang-slider">
+          <span class="lang-slider-dot" [class.fr]="lang.lang === 'fr'"></span>
+        </span>
+        <span class="lang-option" [class.active]="lang.lang === 'fr'">FR</span>
+      </button>
+
+      <!-- Mobile Hamburger -->
+      <button class="hamburger" (click)="toggleMobileMenu()" [class.open]="isMobileMenuOpen" id="hamburger-btn" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" [class.open]="isMobileMenuOpen">
+    <ul class="mobile-links">
+      <li><a (click)="scrollTo('pipeline')">{{ lang.t('nav.solution') }}</a></li>
+      <li><a (click)="scrollTo('features')">{{ lang.t('nav.features') }}</a></li>
+      <li><a (click)="scrollTo('stats')">{{ lang.t('nav.stats') }}</a></li>
+      <li><a (click)="scrollTo('cta-section')">{{ lang.t('nav.contact') }}</a></li>
+    </ul>
+  </div>
+</nav>
