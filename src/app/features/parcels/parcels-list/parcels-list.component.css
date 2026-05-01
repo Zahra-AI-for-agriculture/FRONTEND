@@ -1,0 +1,113 @@
+.parcels-page { max-width: 1100px; margin: 0 auto; }
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.page-header h1 { font-size: 24px; font-weight: 700; color: #1a1a1a; }
+.page-sub { font-size: 14px; color: #6b7280; margin-top: 4px; }
+
+.loading-state, .empty-state {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  min-height: 300px; gap: 12px;
+  color: #6b7280; text-align: center;
+}
+
+.loading-spinner {
+  font-size: 48px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.empty-icon { font-size: 64px; }
+.empty-state h3 { font-size: 18px; font-weight: 600; color: #374151; }
+
+.error-state {
+  background: #fef2f2; border: 1px solid #fecaca;
+  color: #dc2626; border-radius: 10px;
+  padding: 16px; margin-bottom: 20px;
+}
+
+.parcels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.parcel-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #f3f4f6;
+}
+
+.parcel-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.parcel-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  border-left: 4px solid #2d8a4e;
+}
+
+.parcel-crop-icon { font-size: 36px; }
+
+.parcel-card-info { flex: 1; }
+.parcel-card-info h3 {
+  font-size: 16px; font-weight: 700;
+  color: #1a1a1a; margin-bottom: 2px;
+}
+.parcel-crop { font-size: 13px; color: #6b7280; }
+
+.parcel-health-badge {
+  font-size: 11px; font-weight: 600;
+  padding: 4px 10px; border-radius: 20px;
+  border: 1px solid; white-space: nowrap;
+}
+
+.parcel-stats {
+  display: flex;
+  border-top: 1px solid #f3f4f6;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.stat-item {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center;
+  padding: 14px 8px;
+  gap: 2px;
+  border-right: 1px solid #f3f4f6;
+}
+
+.stat-item:last-child { border-right: none; }
+
+.stat-icon  { font-size: 18px; }
+.stat-value { font-size: 14px; font-weight: 700; color: #1a1a1a; }
+.stat-label { font-size: 10px; color: #9ca3af; text-transform: uppercase; }
+
+.parcel-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: #f8faf8;
+}
+
+.diagnose-hint { font-size: 13px; color: #2d8a4e; font-weight: 500; }
+.parcel-arrow  { font-size: 20px; color: #9ca3af; }

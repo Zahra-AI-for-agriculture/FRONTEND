@@ -1,0 +1,278 @@
+<div class="dashboard">
+
+  <!-- ══ Carte satellite parcelles ══ -->
+  <div class="dashboard-map-section">
+    <div class="map-header">
+      <h2>🛰️ Mes parcelles</h2>
+      <span class="map-count" *ngIf="parcels.length > 0">
+        {{ parcels.length }} parcelle(s) —
+        {{ summary.total_area_ha || 0 }} ha total
+      </span>
+      <span class="map-loading" *ngIf="isLoading">Chargement...</span>
+    </div>
+
+    <!-- Légende cultures -->
+    <div class="map-legend" *ngIf="parcels.length > 0">
+      <div class="legend-item" *ngFor="let parcel of parcels">
+        <span class="legend-dot"
+              [style.background]="getLegendColor(parcel.crop)">
+        </span>
+        <span class="legend-label">{{ parcel.name }}</span>
+        <span class="legend-crop">{{ parcel.crop }}</span>
+      </div>
+    </div>
+
+    <!-- Map Leaflet — hauteur fixe obligatoire -->
+    <div id="dashboard-map" class="dashboard-leaflet-map">
+      <div class="map-empty-overlay"
+           *ngIf="!isLoading && parcels.length === 0">
+        <span>🗺️</span>
+        <p>Aucune parcelle enregistrée</p>
+        <a routerLink="/parcels" class="btn-add-parcel">
+          + Ajouter une parcelle
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="loading-spinner">🌿</div>
+    <p>Chargement de votre tableau de bord...</p>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+
+    <!-- En-tête -->
+    <div class="dashboard-header">
+      <div>
+        <h1>Bonjour, {{ farmerName }} 👋</h1>
+        <p class="header-sub">
+          📍 {{ governorate }} —
+          {{ summary.total_parcels || 0 }} parcelle(s) —
+          {{ summary.total_area_ha || 0 }} ha
+        </p>
+      </div>
+      <div class="header-weather" *ngIf="weather">
+        <span class="weather-temp">{{ weather.temperature }}°C</span>
+        <span class="weather-desc">{{ weather.description_fr }}</span>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-icon">🗺️</div>
+        <div class="kpi-value">{{ summary.total_parcels || 0 }}</div>
+        <div class="kpi-label">Parcelles</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">📐</div>
+        <div class="kpi-value">{{ summary.total_area_ha || 0 }}</div>
+        <div class="kpi-label">Hectares</div>
+      </div>
+      <div class="kpi-card" [class.has-alerts]="unreadCount > 0">
+        <div class="kpi-icon">🔔</div>
+        <div class="kpi-value">{{ unreadCount }}</div>
+        <div class="kpi-label">Alertes non lues</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">🤖</div>
+        <div class="kpi-value">
+          {{ aiStatus?.total_loaded || 0 }}/{{ aiStatus?.total_models || 7 }}
+        </div>
+        <div class="kpi-label">Modèles IA actifs</div>
+      </div>
+    </div>
+
+    <!-- Onglets -->
+    <div class="tabs-bar">
+      <button class="tab-btn"
+              *ngFor="let tab of tabs"
+              [class.active]="activeTab === tab.id"
+              (click)="setTab(tab.id)">
+        {{ tab.icon }} {{ tab.label }}
+      </button>
+    </div>
+
+    <!-- ══ TAB : Vue d'ensemble ══ -->
+    <div *ngIf="activeTab === 'overview'">
+      <div class="section-grid">
+
+        <!-- Alertes récentes -->
+        <div class="card">
+          <div class="card-header">
+            <h3>🔔 Alertes récentes</h3>
+            <a routerLink="/alerts" class="card-link">Voir tout</a>
+          </div>
+          <div class="alert-list">
+            <div class="alert-empty" *ngIf="recentAlerts.length === 0">
+              ✅ Aucune alerte active
+            </div>
+            <div class="alert-item"
+                 *ngFor="let alert of recentAlerts"
+                 [class]="'alert-' + (alert.severity || 'low')">
+              <span class="alert-type">
+                {{ alert.type === 'disease' ? '🍃' :
+                   alert.type === 'pest'    ? '🐛' :
+                   alert.type === 'weather' ? '🌧️' :
+                   alert.type === 'drought' ? '☀️' : '📊' }}
+              </span>
+              <span class="alert-msg">{{ alert.message_fr }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Météo détaillée -->
+        <div class="card" *ngIf="weather">
+          <div class="card-header">
+            <h3>🌤️ Météo — {{ governorate }}</h3>
+            <a routerLink="/weather" class="card-link">Détails</a>
+          </div>
+          <div class="weather-grid">
+            <div class="weather-item">
+              <span class="wi-label">Température</span>
+              <span class="wi-value">{{ weather.temperature }}°C</span>
+            </div>
+            <div class="weather-item">
+              <span class="wi-label">Humidité</span>
+              <span class="wi-value">{{ weather.humidity }}%</span>
+            </div>
+            <div class="weather-item">
+              <span class="wi-label">Vent</span>
+              <span class="wi-value">{{ weather.wind_speed_kmh }} km/h</span>
+            </div>
+            <div class="weather-item">
+              <span class="wi-label">Conditions</span>
+              <span class="wi-value">{{ weather.description_fr }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cultures actives -->
+        <div class="card" *ngIf="summary.active_crops?.length">
+          <div class="card-header">
+            <h3>🌱 Cultures actives</h3>
+          </div>
+          <div class="crops-list">
+            <span class="crop-badge" *ngFor="let crop of summary.active_crops">
+              {{ crop }}
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ TAB : Parcelles ══ -->
+    <div *ngIf="activeTab === 'parcels'">
+      <div class="card">
+        <div class="card-header">
+          <h3>🗺️ Mes parcelles</h3>
+          <a routerLink="/parcels" class="card-link">Gérer</a>
+        </div>
+        <div class="parcels-empty" *ngIf="parcels.length === 0">
+          Aucune parcelle enregistrée
+        </div>
+        <div class="parcels-table" *ngIf="parcels.length > 0">
+          <div class="parcel-row"
+               *ngFor="let parcel of parcels"
+               [routerLink]="['/parcels', parcel.id]">
+            <div class="parcel-main">
+              <strong>{{ parcel.name }}</strong>
+              <small>{{ parcel.crop }} — {{ parcel.area_ha }} ha</small>
+            </div>
+            <div class="parcel-health" *ngIf="parcel.health_score">
+              <div class="health-bar">
+                <div class="health-fill"
+                     [style.width.%]="parcel.health_score"
+                     [style.background]="getHealthColor(parcel.health_score)">
+                </div>
+              </div>
+              <span class="health-score"
+                    [style.color]="getHealthColor(parcel.health_score)">
+                {{ parcel.health_score }}/100
+              </span>
+            </div>
+            <div class="parcel-ndvi" *ngIf="parcel.ndvi">
+              NDVI: {{ parcel.ndvi }}
+            </div>
+            <span class="parcel-arrow">›</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TAB : Modèles IA ══ -->
+    <div *ngIf="activeTab === 'ai'">
+      <div class="card">
+        <div class="card-header">
+          <h3>🤖 Statut des modèles IA</h3>
+          <span class="ai-summary">
+            {{ aiStatus?.total_loaded || 0 }}/{{ aiStatus?.total_models || 7 }} actifs
+          </span>
+        </div>
+        <div class="ai-models-grid">
+          <a class="ai-model-card"
+             *ngFor="let model of aiModels"
+             [routerLink]="model.route">
+            <div class="model-icon">{{ model.icon }}</div>
+            <div class="model-info">
+              <span class="model-label">{{ model.label }}</span>
+              <span class="model-status"
+                    [class.status-ok]="getModelStatus(model.key)"
+                    [class.status-off]="!getModelStatus(model.key)">
+                {{ getModelStatus(model.key) ? '● Actif' : '○ Inactif' }}
+              </span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TAB : Météo ══ -->
+    <div *ngIf="activeTab === 'weather'">
+      <div class="card">
+        <div class="card-header">
+          <h3>🌤️ Météo — {{ governorate }}</h3>
+          <a routerLink="/weather" class="card-link">Prévisions complètes</a>
+        </div>
+        <div class="weather-full" *ngIf="weather">
+          <div class="weather-main-temp">{{ weather.temperature }}°C</div>
+          <div class="weather-main-desc">{{ weather.description_fr }}</div>
+          <div class="weather-details">
+            <div class="wd-item">💧 Humidité : {{ weather.humidity }}%</div>
+            <div class="wd-item">💨 Vent : {{ weather.wind_speed_kmh }} km/h</div>
+            <div class="wd-item">🌧️ Précipitations : {{ weather.precipitation_mm || 0 }} mm</div>
+          </div>
+        </div>
+        <div *ngIf="!weather" class="empty-state">
+          Données météo indisponibles
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TAB : Marché ══ -->
+    <div *ngIf="activeTab === 'market'">
+      <div class="card">
+        <div class="card-header">
+          <h3>📈 Prix du marché</h3>
+          <a routerLink="/market" class="card-link">Voir tout</a>
+        </div>
+        <div class="market-empty" *ngIf="marketPricesArray.length === 0">
+          Prix indisponibles
+        </div>
+        <div class="market-table" *ngIf="marketPricesArray.length > 0">
+          <div class="market-row" *ngFor="let item of marketPricesArray">
+            <span class="market-crop">{{ item.crop }}</span>
+            <span class="market-price">{{ item.price }} {{ item.unit }}</span>
+            <span class="market-trend" [class]="getTrendClass(item.trend)">
+              {{ getTrendIcon(item.trend) }} {{ item.trend }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+</div>
