@@ -3,7 +3,7 @@
   <!-- Barre de progression -->
   <div class="progress-bar">
     <div class="progress-brand">
-      <span>🌿</span>
+      <span></span>
       <span class="brand-text">Zahra</span>
     </div>
 
@@ -46,7 +46,7 @@
     <!-- ══ ÉTAPE 1 — Profil ══ -->
     <div class="step-panel" *ngIf="currentStep === 1">
       <div class="step-header">
-        <h2>👋 Bienvenue sur Zahra</h2>
+        <h2> Bienvenue sur Zahra</h2>
         <p>Créons votre profil agriculteur</p>
       </div>
 
@@ -59,14 +59,14 @@
         </div>
 
         <div class="form-group full">
-          <label>📱 Numéro de téléphone</label>
+          <label> Numéro de téléphone</label>
           <input type="tel" [(ngModel)]="formData.phone"
                  placeholder="Ex: 55000001"
                  [class.valid]="formData.phone.length >= 8"/>
         </div>
 
         <div class="form-group">
-          <label>🔒 Mot de passe</label>
+          <label> Mot de passe</label>
           <div class="input-toggle">
             <input [type]="showPassword ? 'text' : 'password'"
                    [(ngModel)]="formData.password"
@@ -74,13 +74,13 @@
                    [class.valid]="formData.password.length >= 6"/>
             <button type="button" class="toggle-btn"
                     (click)="togglePassword()">
-              {{ showPassword ? '🙈' : '👁️' }}
+              {{ showPassword ? '' : '️' }}
             </button>
           </div>
         </div>
 
         <div class="form-group">
-          <label>🔒 Confirmer mot de passe</label>
+          <label> Confirmer mot de passe</label>
           <input type="password"
                  [(ngModel)]="formData.confirmPassword"
                  placeholder="Répéter le mot de passe"
@@ -93,23 +93,23 @@
         </div>
 
         <div class="form-group full">
-          <label>🌐 Langue préférée</label>
+          <label> Langue préférée</label>
           <div class="lang-toggle">
             <button type="button"
                     [class.selected]="formData.language_preference === 'fr'"
                     (click)="formData.language_preference = 'fr'">
-              🇫🇷 Français
+               Français
             </button>
             <button type="button"
                     [class.selected]="formData.language_preference === 'ar'"
                     (click)="formData.language_preference = 'ar'">
-              🇹🇳 العربية
+               العربية
             </button>
           </div>
         </div>
       </div>
 
-      <div class="error-msg" *ngIf="errorMessage">⚠️ {{ errorMessage }}</div>
+      <div class="error-msg" *ngIf="errorMessage">️ {{ errorMessage }}</div>
 
       <div class="step-actions">
         <button class="btn-primary" (click)="nextStep()"
@@ -122,7 +122,7 @@
     <!-- ══ ÉTAPE 2 — Région & Cultures ══ -->
     <div class="step-panel" *ngIf="currentStep === 2">
       <div class="step-header">
-        <h2>🗺️ Où se trouve votre exploitation ?</h2>
+        <h2>️ Où se trouve votre exploitation ?</h2>
         <p>Sélectionnez votre zone agroclimatique</p>
       </div>
 
@@ -144,7 +144,7 @@
       </div>
 
       <div class="culture-section" *ngIf="formData.region_zone">
-        <h3>🌱 Votre culture principale</h3>
+        <h3> Votre culture principale</h3>
         <div class="cultures-grid">
           <button type="button"
                   class="culture-btn"
@@ -157,7 +157,7 @@
         </div>
       </div>
 
-      <div class="error-msg" *ngIf="errorMessage">⚠️ {{ errorMessage }}</div>
+      <div class="error-msg" *ngIf="errorMessage">️ {{ errorMessage }}</div>
 
       <div class="step-actions">
         <button class="btn-secondary" (click)="prevStep()">← Retour</button>
@@ -171,14 +171,14 @@
     <!-- ══ ÉTAPE 3 — Carte satellite + M4 ══ -->
     <div class="step-panel step-map" *ngIf="currentStep === 3">
       <div class="step-header">
-        <h2>🛰️ Localisez votre parcelle</h2>
+        <h2>️ Localisez votre parcelle</h2>
         <p>Cliquez sur votre champ — le modèle M4 (SAM) délimitera
            automatiquement votre parcelle</p>
       </div>
 
       <!-- Parcelles déjà validées -->
       <div class="parcels-validated" *ngIf="parcels.length > 0">
-        <span class="parcels-label">✅ Parcelles validées :</span>
+        <span class="parcels-label"> Parcelles validées :</span>
         <div class="parcels-list">
           <span class="parcel-chip" *ngFor="let p of parcels">
             {{ p.name }} — {{ p.area_ha }} ha
@@ -194,20 +194,20 @@
            [class.status-error]="!!segmentationError && !segmentationLoading"
            [class.status-editing]="isEditing">
         <span *ngIf="!formData.parcel_lat && !segmentationLoading">
-          📍 Cliquez sur la carte pour sélectionner votre parcelle
+           Cliquez sur la carte pour sélectionner votre parcelle
         </span>
         <span *ngIf="segmentationLoading">
-          🔄 Modèle M4 (SAM) en cours d'analyse...
+           Modèle M4 (SAM) en cours d'analyse...
         </span>
         <span *ngIf="segmentationDone && !segmentationLoading && !segmentationError && !isEditing">
-          ✅ Parcelle délimitée par l'IA —
+           Parcelle délimitée par l'IA —
           {{ formData.parcel_area_ha }} ha détectés
         </span>
         <span *ngIf="segmentationError && !segmentationLoading">
-          ⚠️ {{ segmentationError }}
+          ️ {{ segmentationError }}
         </span>
         <span *ngIf="isEditing">
-          ✏️ Mode édition — glissez les points pour ajuster le contour
+          ️ Mode édition — glissez les points pour ajuster le contour
         </span>
       </div>
 
@@ -217,17 +217,17 @@
       <!-- Dialog : ajouter une autre parcelle ? -->
       <div class="add-another-dialog" *ngIf="showAddAnotherDialog && lastParcel">
         <div class="dialog-content">
-          <p>✅ <strong>{{ lastParcel?.name }}</strong>
+          <p> <strong>{{ lastParcel?.name }}</strong>
              ajoutée ({{ lastParcel?.area_ha }} ha)</p>
           <p>Voulez-vous ajouter une autre parcelle ?</p>
           <div class="edit-buttons">
             <button type="button" class="btn-confirm-edit"
                     (click)="addAnotherParcel()">
-              ➕ Ajouter une parcelle
+               Ajouter une parcelle
             </button>
             <button type="button" class="btn-cancel-edit"
                     (click)="finishParcelSelection()">
-              ✅ Non, créer mon compte
+               Non, créer mon compte
             </button>
           </div>
         </div>
@@ -249,7 +249,7 @@
             <label>Superficie</label>
             <div class="info-value">
               {{ formData.parcel_area_ha || '—' }} ha
-              <span class="badge-ai" *ngIf="segmentationDone && !segmentationError">M4 IA 🛰️</span>
+              <span class="badge-ai" *ngIf="segmentationDone && !segmentationError">M4 IA ️</span>
               <span class="badge-approx" *ngIf="segmentationError">estimée</span>
             </div>
           </div>
@@ -273,33 +273,33 @@
         <div class="parcel-actions">
           <ng-container *ngIf="!isEditing">
             <button type="button" class="btn-edit" (click)="enableEditing()">
-              ✏️ Rectifier le contour
+              ️ Rectifier le contour
             </button>
             <button type="button" class="btn-validate-parcel"
                     (click)="validateCurrentParcel()">
-              ✅ Valider cette parcelle
+               Valider cette parcelle
             </button>
           </ng-container>
 
           <ng-container *ngIf="isEditing">
             <div class="edit-hint">
-              🖱️ Glissez les points blancs pour ajuster le contour
+              ️ Glissez les points blancs pour ajuster le contour
             </div>
             <div class="edit-buttons">
               <button type="button" class="btn-confirm-edit"
                       (click)="confirmEditing()">
-                ✅ Valider les modifications
+                 Valider les modifications
               </button>
               <button type="button" class="btn-cancel-edit"
                       (click)="cancelEditing()">
-                ✖️ Annuler
+                ️ Annuler
               </button>
             </div>
           </ng-container>
         </div>
       </div>
 
-      <div class="error-msg" *ngIf="errorMessage">⚠️ {{ errorMessage }}</div>
+      <div class="error-msg" *ngIf="errorMessage">️ {{ errorMessage }}</div>
 
       <div class="step-actions">
         <button class="btn-secondary" (click)="prevStep()">← Retour</button>
@@ -308,8 +308,8 @@
                 (click)="onSubmit()"
                 [disabled]="isLoading || isEditing">
           {{ isLoading
-            ? '⏳ Création...'
-            : '🚀 Créer mon compte Zahra (' + parcels.length + ' parcelle' + (parcels.length > 1 ? 's' : '') + ')' }}
+            ? ' Création...'
+            : ' Créer mon compte Zahra (' + parcels.length + ' parcelle' + (parcels.length > 1 ? 's' : '') + ')' }}
         </button>
       </div>
     </div>

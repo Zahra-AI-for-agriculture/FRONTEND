@@ -34,10 +34,10 @@ export class ParcelDetailComponent implements OnInit, OnDestroy {
   savedToast = false;
 
   readonly analyzeMessages = [
-    '🔬 Analyse de la texture des feuilles...',
-    '🧠 Modèle EfficientNet-B0 en cours...',
-    '🌿 Comparaison avec 38 classes de maladies...',
-    '📊 Calcul du niveau de confiance...',
+    ' Analyse de la texture des feuilles...',
+    ' Modèle EfficientNet-B0 en cours...',
+    ' Comparaison avec 38 classes de maladies...',
+    ' Calcul du niveau de confiance...',
   ];
   currentMessage = '';
   private messageInterval: any;
@@ -256,11 +256,11 @@ export class ParcelDetailComponent implements OnInit, OnDestroy {
 
   getCropEmoji(crop: string): string {
     const map: Record<string, string> = {
-      'Olivier': '🫒', 'Blé dur': '🌾', 'Tomate': '🍅',
-      'Piment': '🌶️', 'Agrumes': '🍊', 'Orge': '🌿',
-      'Grenade': '🍎', 'Fève': '🫘',
+      'Olivier': '', 'Blé dur': '', 'Tomate': '',
+      'Piment': '️', 'Agrumes': '', 'Orge': '',
+      'Grenade': '', 'Fève': '',
     };
-    return map[crop] || '🌱';
+    return map[crop] || '';
   }
 
   goBack(): void {

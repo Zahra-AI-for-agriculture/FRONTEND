@@ -36,21 +36,21 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   activeTab = 'overview';
 
   readonly tabs = [
-    { id: 'overview', label: 'Vue d\'ensemble', icon: '🏠' },
-    { id: 'parcels',  label: 'Parcelles',        icon: '🗺️' },
-    { id: 'ai',       label: 'Modèles IA',        icon: '🤖' },
-    { id: 'weather',  label: 'Météo',             icon: '🌤️' },
-    { id: 'market',   label: 'Marché',            icon: '📈' },
+    { id: 'overview', label: 'Vue d\'ensemble', icon: '' },
+    { id: 'parcels',  label: 'Parcelles',        icon: '️' },
+    { id: 'ai',       label: 'Modèles IA',        icon: '' },
+    { id: 'weather',  label: 'Météo',             icon: '️' },
+    { id: 'market',   label: 'Marché',            icon: '' },
   ];
 
   readonly aiModels = [
-    { key: 'm1_disease',      label: 'Diagnostic maladie', icon: '🔬', route: '/ai/disease'    },
-    { key: 'm2_yield',        label: 'Rendement',          icon: '🌾', route: '/ai/yield'      },
-    { key: 'm3_drought',      label: 'Sécheresse',         icon: '☀️', route: '/ai/drought'    },
-    { key: 'm4_segmentation', label: 'Segmentation',       icon: '🛰️', route: '/parcels'       },
-    { key: 'm5_irrigation',   label: 'Irrigation',         icon: '💧', route: '/ai/irrigation' },
-    { key: 'm6_ndvi',         label: 'Anomalie NDVI',      icon: '📊', route: '/parcels'       },
-    { key: 'm7_pest',         label: 'Ravageurs',          icon: '🐛', route: '/ai/pest'       },
+    { key: 'm1_disease',      label: 'Diagnostic maladie', icon: '', route: '/ai/disease'    },
+    { key: 'm2_yield',        label: 'Rendement',          icon: '', route: '/ai/yield'      },
+    { key: 'm3_drought',      label: 'Sécheresse',         icon: '️', route: '/ai/drought'    },
+    { key: 'm4_segmentation', label: 'Segmentation',       icon: '️', route: '/parcels'       },
+    { key: 'm5_irrigation',   label: 'Irrigation',         icon: '', route: '/ai/irrigation' },
+    { key: 'm6_ndvi',         label: 'Anomalie NDVI',      icon: '', route: '/parcels'       },
+    { key: 'm7_pest',         label: 'Ravageurs',          icon: '', route: '/ai/pest'       },
   ];
 
   private readonly cropColors: Record<string, string> = {
@@ -109,7 +109,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       'https://mt{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
       {
         subdomains:    ['0', '1', '2', '3'],
-        attribution:   '© Google Maps',
+        attribution:   ' Google Maps',
         maxZoom:       21,
         maxNativeZoom: 20,
       } as any
@@ -118,7 +118,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.parcelsLayerGroup = L.featureGroup().addTo(this.map);
 
     this.mapReady = true;
-    console.log('[MAP] Initialisée ✅');
+    console.log('[MAP] Initialisée ');
 
     if (this.parcels && this.parcels.length > 0) {
       console.log('[MAP] Parcelles déjà disponibles → affichage immédiat');
@@ -200,16 +200,16 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         polygonLayer.bindPopup(`
           <div style="font-family:'Segoe UI',sans-serif;min-width:180px">
             <div style="font-weight:700;font-size:14px;margin-bottom:8px">
-              🗺️ ${parcel.name}
+              ️ ${parcel.name}
             </div>
             <div style="font-size:13px;color:#374151;margin-bottom:4px">
-              🌱 ${parcel.crop || '—'}
+               ${parcel.crop || '—'}
             </div>
             <div style="font-size:13px;color:#374151;margin-bottom:4px">
-              📐 ${parcel.area_ha || '—'} ha
+               ${parcel.area_ha || '—'} ha
             </div>
             <div style="font-size:13px;color:#374151;margin-bottom:10px">
-              📍 ${parcel.region || '—'}
+               ${parcel.region || '—'}
             </div>
             <a href="/parcels/${parcel.id}"
                style="display:block;text-align:center;
@@ -217,16 +217,16 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
                       border:1px solid #bbf7d0;border-radius:8px;
                       padding:6px 12px;font-size:13px;font-weight:600;
                       text-decoration:none;">
-              🔬 Diagnostiquer cette parcelle →
+               Diagnostiquer cette parcelle →
             </a>
           </div>
         `);
 
         allBounds.push(bounds);
-        console.log('[MAP] ✅ Parcelle ajoutée:', parcel.name);
+        console.log('[MAP]  Parcelle ajoutée:', parcel.name);
 
       } catch (e) {
-        console.error('[MAP] ❌ Erreur:', parcel.name, e);
+        console.error('[MAP]  Erreur:', parcel.name, e);
       }
     });
 

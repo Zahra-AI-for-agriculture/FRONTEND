@@ -16,19 +16,19 @@ export class AppLayoutComponent implements OnInit {
   currentRoute = '';
 
   readonly navItems = [
-    { path: '/dashboard',    icon: '🏠', label: 'Tableau de bord' },
-    { path: '/parcels',      icon: '🗺️', label: 'Mes Parcelles'   },
-    { path: '/ai/disease',   icon: '🔬', label: 'Diagnostic IA'   },
-    { path: '/ai/irrigation',icon: '💧', label: 'Irrigation'      },
-    { path: '/ai/drought',   icon: '☀️', label: 'Sécheresse'      },
-    { path: '/ai/pest',      icon: '🐛', label: 'Ravageurs'       },
-    { path: '/weather',      icon: '🌤️', label: 'Météo'           },
-    { path: '/market',       icon: '📈', label: 'Marché'          },
-    { path: '/alerts',       icon: '🔔', label: 'Alertes'         },
-    { path: '/treatments',   icon: '💊', label: 'Traitements'     },
-    { path: '/knowledge',    icon: '📚', label: 'Connaissances'   },
-    { path: '/community',    icon: '👥', label: 'Communauté'      },
-    { path: '/reports',      icon: '📊', label: 'Rapports'        },
+    { path: '/dashboard',    icon: '', label: 'Tableau de bord' },
+    { path: '/parcels',      icon: '️', label: 'Mes Parcelles'   },
+    { path: '/ai/disease',   icon: '', label: 'Diagnostic IA'   },
+    { path: '/ai/irrigation',icon: '', label: 'Irrigation'      },
+    { path: '/ai/drought',   icon: '️', label: 'Sécheresse'      },
+    { path: '/ai/pest',      icon: '', label: 'Ravageurs'       },
+    { path: '/weather',      icon: '️', label: 'Météo'           },
+    { path: '/market',       icon: '', label: 'Marché'          },
+    { path: '/alerts',       icon: '', label: 'Alertes'         },
+    { path: '/treatments',   icon: '', label: 'Traitements'     },
+    { path: '/knowledge',    icon: '', label: 'Connaissances'   },
+    { path: '/community',    icon: '', label: 'Communauté'      },
+    { path: '/reports',      icon: '', label: 'Rapports'        },
   ];
 
   constructor(

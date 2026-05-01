@@ -66,48 +66,48 @@ export class RegisterComponent implements OnDestroy, AfterViewChecked {
 
   readonly zones = [
     { zone: 'nord_humide',      label: 'Nord Humide',
-      emoji: '🌲', gouvernorats: 'Béja, Jendouba, Bizerte',
+      emoji: '', gouvernorats: 'Béja, Jendouba, Bizerte',
       gouvernorat: 'Béja',     cultures: ['Céréales', 'Maraîchage'],
       lat: 36.73, lng: 9.18,  zoom: 13 },
     { zone: 'nord_semi_aride',  label: 'Nord Semi-Aride',
-      emoji: '🌾', gouvernorats: 'Siliana, Le Kef',
+      emoji: '', gouvernorats: 'Siliana, Le Kef',
       gouvernorat: 'Siliana',  cultures: ['Blé dur', 'Olivier'],
       lat: 36.08, lng: 9.37,  zoom: 13 },
     { zone: 'cap_bon',          label: 'Cap Bon',
-      emoji: '🍊', gouvernorats: 'Nabeul',
+      emoji: '', gouvernorats: 'Nabeul',
       gouvernorat: 'Nabeul',   cultures: ['Agrumes', 'Tomate'],
       lat: 36.45, lng: 10.73, zoom: 13 },
     { zone: 'centre_est',       label: 'Centre Est',
-      emoji: '🫒', gouvernorats: 'Sousse, Monastir',
+      emoji: '', gouvernorats: 'Sousse, Monastir',
       gouvernorat: 'Sousse',   cultures: ['Olivier', 'Amandier'],
       lat: 35.82, lng: 10.64, zoom: 13 },
     { zone: 'centre_ouest',     label: 'Centre Ouest',
-      emoji: '🌵', gouvernorats: 'Kasserine, Sidi Bouzid',
+      emoji: '', gouvernorats: 'Kasserine, Sidi Bouzid',
       gouvernorat: 'Sidi Bouzid', cultures: ['Blé', 'Piment'],
       lat: 35.04, lng: 9.49,  zoom: 13 },
     { zone: 'sud_est',          label: 'Sud Est',
-      emoji: '☀️', gouvernorats: 'Sfax, Gabès',
+      emoji: '️', gouvernorats: 'Sfax, Gabès',
       gouvernorat: 'Sfax',     cultures: ['Olivier', 'Dattes'],
       lat: 34.74, lng: 10.76, zoom: 13 },
     { zone: 'sud_ouest',        label: 'Sud Ouest',
-      emoji: '🌴', gouvernorats: 'Gafsa, Tozeur',
+      emoji: '', gouvernorats: 'Gafsa, Tozeur',
       gouvernorat: 'Tozeur',   cultures: ['Dattes', 'Primeurs'],
       lat: 33.92, lng: 8.13,  zoom: 13 },
     { zone: 'tunisie_centrale', label: 'Tunisie Centrale',
-      emoji: '🏜️', gouvernorats: 'Kairouan, Zaghouan',
+      emoji: '️', gouvernorats: 'Kairouan, Zaghouan',
       gouvernorat: 'Kairouan', cultures: ['Céréales', 'Maraîchage'],
       lat: 35.68, lng: 10.10, zoom: 13 },
   ];
 
   readonly cultures = [
-    { value: 'Olivier',  emoji: '🫒' },
-    { value: 'Blé dur',  emoji: '🌾' },
-    { value: 'Tomate',   emoji: '🍅' },
-    { value: 'Piment',   emoji: '🌶️' },
-    { value: 'Agrumes',  emoji: '🍊' },
-    { value: 'Orge',     emoji: '🌿' },
-    { value: 'Grenade',  emoji: '🍎' },
-    { value: 'Fève',     emoji: '🫘' },
+    { value: 'Olivier',  emoji: '' },
+    { value: 'Blé dur',  emoji: '' },
+    { value: 'Tomate',   emoji: '' },
+    { value: 'Piment',   emoji: '️' },
+    { value: 'Agrumes',  emoji: '' },
+    { value: 'Orge',     emoji: '' },
+    { value: 'Grenade',  emoji: '' },
+    { value: 'Fève',     emoji: '' },
   ];
 
   private selectedZone: any = null;
@@ -203,7 +203,7 @@ export class RegisterComponent implements OnDestroy, AfterViewChecked {
     L.tileLayer(
       'https://mt{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
       {
-        attribution:    '© Google Maps',
+        attribution:    ' Google Maps',
         subdomains:     ['0', '1', '2', '3'],
         maxZoom:        21,
         maxNativeZoom:  20,
@@ -223,7 +223,7 @@ export class RegisterComponent implements OnDestroy, AfterViewChecked {
     if (this.marker) this.map!.removeLayer(this.marker);
     this.marker = L.marker([lat, lng])
       .addTo(this.map!)
-      .bindPopup('📍 Ma parcelle')
+      .bindPopup(' Ma parcelle')
       .openPopup();
 
     this.formData.parcel_lat = lat;
@@ -359,7 +359,7 @@ export class RegisterComponent implements OnDestroy, AfterViewChecked {
             this.formData.polygon_geojson = JSON.stringify(geoJsonLatLng);
             this.segmentationDone = true;
 
-            console.log('[M4] ✅ Polygone affiché, superficie:', areaHa, 'ha');
+            console.log('[M4]  Polygone affiché, superficie:', areaHa, 'ha');
 
           } catch (e) {
             console.warn('[M4] Erreur conversion GeoJSON:', e);

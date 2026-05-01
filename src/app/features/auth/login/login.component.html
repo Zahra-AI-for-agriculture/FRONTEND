@@ -1,7 +1,7 @@
 <div class="auth-wrapper">
   <div class="auth-left">
     <div class="auth-brand">
-      <div class="brand-logo">🌿</div>
+      <div class="brand-logo"></div>
       <h1 class="brand-name">Zahra</h1>
       <p class="brand-tagline">
         L'intelligence agricole au service<br>
@@ -10,21 +10,21 @@
     </div>
     <div class="auth-stats">
       <div class="stat-card">
-        <span class="stat-icon">🛰️</span>
+        <span class="stat-icon">️</span>
         <div>
           <strong>7 modèles IA</strong>
           <small>actifs en temps réel</small>
         </div>
       </div>
       <div class="stat-card">
-        <span class="stat-icon">🌾</span>
+        <span class="stat-icon"></span>
         <div>
           <strong>+24% rendement</strong>
           <small>moyenne agriculteurs Zahra</small>
         </div>
       </div>
       <div class="stat-card">
-        <span class="stat-icon">💧</span>
+        <span class="stat-icon"></span>
         <div>
           <strong>-30% eau</strong>
           <small>grâce à l'irrigation IA</small>
@@ -36,36 +36,36 @@
   <div class="auth-right">
     <div class="auth-card">
       <div class="auth-header">
-        <h2>Bon retour 👋</h2>
+        <h2>Bon retour </h2>
         <p>Connectez-vous à votre espace agricole</p>
       </div>
 
       <form (ngSubmit)="onSubmit()">
         <div class="form-group">
-          <label>📱 Numéro de téléphone</label>
+          <label> Numéro de téléphone</label>
           <input type="tel" [(ngModel)]="phone" name="phone"
                  placeholder="Ex: 55000001"/>
         </div>
 
         <div class="form-group">
-          <label>🔒 Mot de passe</label>
+          <label> Mot de passe</label>
           <div class="input-toggle">
             <input [type]="showPassword ? 'text' : 'password'"
                    [(ngModel)]="password" name="password"
                    placeholder="Votre mot de passe"/>
             <button type="button" class="toggle-btn"
                     (click)="togglePassword()">
-              {{ showPassword ? '🙈' : '👁️' }}
+              {{ showPassword ? '' : '️' }}
             </button>
           </div>
         </div>
 
         <div class="error-msg" *ngIf="errorMessage">
-          ⚠️ {{ errorMessage }}
+          ️ {{ errorMessage }}
         </div>
 
         <button type="submit" class="btn-primary" [disabled]="isLoading">
-          {{ isLoading ? '⏳ Connexion...' : 'Se connecter' }}
+          {{ isLoading ? ' Connexion...' : 'Se connecter' }}
         </button>
       </form>
 

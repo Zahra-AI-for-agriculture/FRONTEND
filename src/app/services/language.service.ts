@@ -202,8 +202,8 @@ export class LanguageService {
       ar: 'لكل فلاح تونسي'
     },
     'footer.rights': {
-      fr: '© 2025 ZAHRA.',
-      ar: '© 2025 زهرة.'
+      fr: ' 2025 ZAHRA.',
+      ar: ' 2025 زهرة.'
     }
   };
 
