@@ -37,9 +37,13 @@ export class LanguageService {
     },
 
     // ──── HERO ────
-    'hero.headline': {
-      fr: 'Votre terre, plus forte',
-      ar: 'أرضك، أقوى'
+    'hero.headline.start': {
+      fr: 'Votre terre,',
+      ar: 'أرضك،'
+    },
+    'hero.headline.highlight': {
+      fr: 'plus forte',
+      ar: 'أقوى'
     },
     'hero.subheadline': {
       fr: 'Photographiez. Comprenez. Agissez.',
@@ -67,72 +71,203 @@ export class LanguageService {
       fr: 'Photographiez',
       ar: 'صوّر'
     },
+    'pipeline.step1.desc': {
+      fr: 'Prenez une photo de votre plante ou de votre champ avec votre téléphone.',
+      ar: 'صوّر نبتتك أو أرضك بتليفونك.'
+    },
     'pipeline.step2.title': {
       fr: 'On trouve',
       ar: 'نلقاو المشكل'
+    },
+    'pipeline.step2.desc': {
+      fr: 'Nos 7 modèles IA analysent l\'image et détectent le problème en moins de 3 secondes.',
+      ar: '7 نماذج ذكاء اصطناعي يحللو الصورة ويلقاو المشكل في أقل من 3 ثواني.'
     },
     'pipeline.step3.title': {
       fr: 'On vous dit',
       ar: 'نقولولك'
     },
+    'pipeline.step3.desc': {
+      fr: 'Vous recevez un diagnostic clair : maladie, sécheresse, ravageur ou alerte NDVI.',
+      ar: 'تقبض تشخيص واضح: مرض، جفاف، آفة أو تنبيه NDVI.'
+    },
     'pipeline.step4.title': {
       fr: 'On vous aide',
       ar: 'نعاونوك'
     },
+    'pipeline.step4.desc': {
+      fr: 'Traitement, dose d\'irrigation, prévision de récolte — tout ce qu\'il faut pour agir.',
+      ar: 'دواء، كمية سقي، توقع محصول — كل ما تحتاجه باش تعمل.'
+    },
 
     // ──── FEATURES ────
     'features.title': {
-      fr: 'Tout dans une app',
-      ar: 'الكل في تطبيق واحد'
+      fr: '7 modèles IA au service de ta terre',
+      ar: '7 نماذج ذكاء اصطناعي في خدمة أرضك'
     },
-    'feature.disease.title': {
-      fr: 'Trouver la maladie',
-      ar: 'لقا المرض'
+    'features.badge': {
+      fr: 'Intelligence artificielle',
+      ar: 'ذكاء اصطناعي'
     },
-    'feature.disease.action': {
-      fr: 'Photo de la plante',
-      ar: 'صوّر النبتة'
+    'features.subtitle': {
+      fr: 'Chaque modèle résout un vrai problème du terrain tunisien',
+      ar: 'كل نموذج يحل مشكل حقيقي في الأرض التونسية'
     },
-    'feature.ndvi.title': {
-      fr: 'Santé du champ',
-      ar: 'صحّة الغلّة'
+
+    // M1 — Disease Detection
+    'model.disease.title': {
+      fr: 'Diagnostic plante',
+      ar: 'تشخيص النبتة'
     },
-    'feature.ndvi.action': {
-      fr: 'Voir la carte',
-      ar: 'شوف الخريطة'
+    'model.disease.hook': {
+      fr: 'Photo → maladie identifiée en moins de 20ms',
+      ar: 'تصويرة → المرض يتحدد في أقل من 20 ميلي ثانية'
     },
-    'feature.irrigation.title': {
-      fr: 'Quand arroser',
-      ar: 'وقتاش تسقي'
+    'model.disease.metric': {
+      fr: 'précision',
+      ar: 'دقة'
     },
-    'feature.irrigation.action': {
-      fr: 'Alerte automatique',
-      ar: 'تنبيه وحدو'
+    'model.disease.input': {
+      fr: '📸 Photo feuille',
+      ar: '📸 تصويرة ورقة'
     },
-    'feature.weather.title': {
-      fr: 'Alertes',
-      ar: 'تنبيهات'
+    'model.disease.output': {
+      fr: '💊 Maladie + traitement',
+      ar: '💊 مرض + دواء'
     },
-    'feature.weather.action': {
-      fr: 'Avant le danger',
-      ar: 'قبل الخطر'
+
+    // M2 — Crop Yield
+    'model.yield.title': {
+      fr: 'Prévision récolte',
+      ar: 'توقع المحصول'
     },
-    'feature.market.title': {
-      fr: 'Prix du marché',
-      ar: 'أسعار السوق'
+    'model.yield.hook': {
+      fr: 'Estimez votre rendement avant la récolte',
+      ar: 'قدّر محصولك قبل الحصاد'
     },
-    'feature.market.action': {
-      fr: 'Vendre mieux',
-      ar: 'بيع خير'
+    'model.yield.metric': {
+      fr: 'fiabilité',
+      ar: 'موثوقية'
     },
-    'feature.offline.title': {
-      fr: 'Sans internet',
-      ar: 'بلا أنترنات'
+    'model.yield.input': {
+      fr: '🌱 Culture, météo, sol',
+      ar: '🌱 زرع، طقس، تربة'
     },
-    'feature.offline.action': {
-      fr: 'Toujours prêt',
-      ar: 'ديما جاهز'
+    'model.yield.output': {
+      fr: '📊 T/ha + revenu DT',
+      ar: '📊 طن/هكتار + مدخول'
     },
+
+    // M3 — Drought
+    'model.drought.title': {
+      fr: 'Alerte sécheresse',
+      ar: 'تنبيه جفاف'
+    },
+    'model.drought.hook': {
+      fr: 'Prévision à 7, 14 et 30 jours avec SPI',
+      ar: 'توقع على 7، 14 و 30 يوم'
+    },
+    'model.drought.metric': {
+      fr: 'erreur SPI',
+      ar: 'خطأ SPI'
+    },
+    'model.drought.input': {
+      fr: '🌡️ 90 jours météo',
+      ar: '🌡️ 90 يوم طقس'
+    },
+    'model.drought.output': {
+      fr: '⚠️ Niveau risque',
+      ar: '⚠️ مستوى الخطر'
+    },
+
+    // M4 — Segmentation
+    'model.segmentation.title': {
+      fr: 'Découpe parcelle',
+      ar: 'تقطيع الأرض'
+    },
+    'model.segmentation.hook': {
+      fr: 'Touchez votre champ, on dessine les limites',
+      ar: 'حط صبعك على أرضك، نرسمو الحدود'
+    },
+    'model.segmentation.metric': {
+      fr: 'confiance',
+      ar: 'ثقة'
+    },
+    'model.segmentation.input': {
+      fr: '🛰️ Satellite + clic',
+      ar: '🛰️ ساتاليت + نقرة'
+    },
+    'model.segmentation.output': {
+      fr: '🗺️ Contour + hectares',
+      ar: '🗺️ حدود + هكتارات'
+    },
+
+    // M5 — Irrigation
+    'model.irrigation.title': {
+      fr: 'Irrigation intelligente',
+      ar: 'سقي ذكي'
+    },
+    'model.irrigation.hook': {
+      fr: '-20% d\'eau, zéro stress hydrique',
+      ar: '-20% ما، بلا إجهاد مائي'
+    },
+    'model.irrigation.metric': {
+      fr: 'RMSE/jour',
+      ar: 'RMSE/يوم'
+    },
+    'model.irrigation.input': {
+      fr: '🌿 Culture, sol, météo',
+      ar: '🌿 زرع، تربة، طقس'
+    },
+    'model.irrigation.output': {
+      fr: '💧 Dose + horaire',
+      ar: '💧 كمية + وقت السقي'
+    },
+
+    // M6 — NDVI
+    'model.ndvi.title': {
+      fr: 'Santé végétation',
+      ar: 'صحة النبات'
+    },
+    'model.ndvi.hook': {
+      fr: 'Anomalie détectée 5-10 jours avant l\'œil nu',
+      ar: 'تكشف المشكل 5-10 أيام قبل العين'
+    },
+    'model.ndvi.metric': {
+      fr: 'rappel',
+      ar: 'استرجاع'
+    },
+    'model.ndvi.input': {
+      fr: '📡 NDVI + météo + sol',
+      ar: '📡 NDVI + طقس + تربة'
+    },
+    'model.ndvi.output': {
+      fr: '🚨 Alerte + cause',
+      ar: '🚨 تنبيه + السبب'
+    },
+
+    // M7 — Pest
+    'model.pest.title': {
+      fr: 'Prédiction ravageurs',
+      ar: 'توقع الآفات'
+    },
+    'model.pest.hook': {
+      fr: 'Mouche olive, Tuta, pucerons, criquet, acariens',
+      ar: 'ذبانة الزيتون، توتا، من، جراد، عنكبوت'
+    },
+    'model.pest.metric': {
+      fr: 'F1-score',
+      ar: 'F1-score'
+    },
+    'model.pest.input': {
+      fr: '🌾 Météo, culture, saison',
+      ar: '🌾 طقس، زرع، موسم'
+    },
+    'model.pest.output': {
+      fr: '🛡️ Ravageur + traitement',
+      ar: '🛡️ آفة + علاج'
+    },
+
 
     // ──── STATS ────
     'stats.regions': {
@@ -162,7 +297,7 @@ export class LanguageService {
       ar: 'فلاح، سيدي بوزيد'
     },
     'problem.pain1': {
-      fr: 'Maladie trop tard',
+      fr: 'Maladie non détectée',
       ar: 'مرض فات الوقت'
     },
     'problem.pain2': {
@@ -202,9 +337,10 @@ export class LanguageService {
       ar: 'لكل فلاح تونسي'
     },
     'footer.rights': {
-      fr: ' 2025 ZAHRA.',
-      ar: ' 2025 زهرة.'
+      fr: '© 2025 ZAHRA.',
+      ar: '© 2025 زهرة.'
     }
+    
   };
 
   get lang(): Language {

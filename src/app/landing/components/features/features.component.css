@@ -1,121 +1,302 @@
-/* ═══════════════════════════════════════════
-   Features Component — Icon-driven cards
-   ═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════
+   FEATURES — Havens Style: dark forest bg + warm cards
+   ═══════════════════════════════════════════════════════ */
 
 .features {
-  background: var(--color-dark-green-1);
   position: relative;
+  background: transparent;
+  padding: 130px 0 150px;
+  overflow: hidden;
 }
 
-.features::before {
-  content: '';
+.features::before,
+.features::after {
+  display: none;
+}
+
+/* Décoration feuilles SVG en fond */
+.features-bg-deco {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
 }
 
-/* ── Grid ── */
-.features-grid {
+.features-bg-deco svg {
+  position: absolute;
+  opacity: 0.04;
+}
+
+.features-bg-deco .deco-leaf-1 {
+  top: 5%; right: 3%;
+  width: 320px;
+}
+
+.features-bg-deco .deco-leaf-2 {
+  bottom: 10%; left: 2%;
+  width: 240px;
+  transform: scaleX(-1) rotate(20deg);
+}
+
+/* ── Section Header ── */
+.section-header {
+  text-align: center;
+  margin-bottom: 72px;
+  position: relative;
+  z-index: 2;
+}
+
+.section-badge {
+  display: inline-block;
+  background: rgba(168, 214, 114, 0.12);
+  color: var(--color-leaf, #A8D672);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 20px;
+  border-radius: 100px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  border: 1.5px solid rgba(168, 214, 114, 0.22);
+}
+
+.section-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 16px;
+  line-height: 1.15;
+}
+
+.section-subtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+  color: rgba(212, 237, 186, 0.75);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.65;
+}
+
+/* ── Grid des modèles ── */
+.models-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 20px;
+  position: relative;
+  z-index: 2;
 }
 
-/* ── Card ── */
-.feature-card {
+/* ── Card individuelle ── */
+.model-card {
   position: relative;
-  padding: 40px 32px;
+  padding: 28px 24px 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
   overflow: hidden;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out,
-              background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-  transition-delay: var(--card-delay);
-  text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 16px;
+  cursor: default;
+
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.55s ease-out,
+    transform 0.55s ease-out,
+    border-color 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+  transition-delay: var(--card-delay, 0s);
 }
 
-.feature-card.visible {
+.model-card.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-.feature-card:hover {
-  background: var(--card-gradient);
-  transform: translateY(-6px) !important;
-  box-shadow: var(--shadow-lg);
+/* Featured : span 2 colonnes */
+.model-card.featured {
+  grid-column: span 2;
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(122, 182, 72, 0.18);
 }
 
-/* Icon — colored circle */
-.feature-icon-wrapper {
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 50%;
-  transition: var(--transition-base);
-  color: var(--icon-color);
-}
-
-.feature-card:hover .feature-icon-wrapper {
-  transform: scale(1.12);
+/* Hover */
+.model-card:hover {
   background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 30px rgba(76, 175, 80, 0.15);
+  border-color: var(--accent, #7AB648);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25), 0 0 0 1px var(--accent, #7AB648);
+  transform: translateY(-6px);
 }
 
-/* Title — big, short */
-.feature-title {
-  font-size: var(--font-size-xl);
-  font-weight: 700;
-  color: var(--color-white);
-}
-
-/* Action — subtle, very short */
-.feature-action {
-  font-size: var(--font-size-sm);
-  color: var(--color-gray-200);
-  font-weight: 500;
-}
-
-/* Hover glow effect */
-.feature-glow {
+/* ── Barre accent haut ── */
+.model-accent {
   position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(76, 175, 80, 0.08) 0%, transparent 70%);
-  border-radius: 50%;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  pointer-events: none;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--accent, #7AB648);
+  opacity: 0.65;
+  transition: opacity 0.3s;
+  border-radius: 22px 22px 0 0;
 }
 
-.feature-card:hover .feature-glow {
+.model-card:hover .model-accent {
   opacity: 1;
 }
 
-/* ── Responsive ── */
+/* ── Header : tag ── */
+.model-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.model-tag {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--accent, #7AB648);
+  background: color-mix(in srgb, var(--accent, #7AB648) 14%, transparent);
+  padding: 4px 12px;
+  border-radius: 8px;
+}
+
+/* ── Icône ── */
+.model-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--accent, #7AB648) 10%, transparent);
+  color: var(--accent, #7AB648);
+  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.model-card:hover .model-icon {
+  transform: scale(1.1) translateY(-2px);
+  background: color-mix(in srgb, var(--accent, #7AB648) 18%, transparent);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--accent, #7AB648) 25%, transparent);
+}
+
+/* ── Titre ── */
+.model-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.25;
+  margin: 0;
+}
+
+/* ── Description ── */
+.model-hook {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: rgba(212, 237, 186, 0.70);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ── I/O Flow ── */
+.model-io {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+
+.io-in {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.55);
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.io-out {
+  background: color-mix(in srgb, var(--accent, #7AB648) 12%, transparent);
+  color: var(--accent, #7AB648);
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.io-arrow {
+  flex-shrink: 0;
+  opacity: 0.3;
+  color: rgba(255,255,255,0.6);
+}
+
+/* ── Glow hover ── */
+.model-glow {
+  position: absolute;
+  bottom: -40%;
+  left: -20%;
+  width: 140%;
+  height: 140%;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--accent, #7AB648) 8%, transparent) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+
+.model-card:hover .model-glow {
+  opacity: 1;
+}
+
+/* ══════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════ */
 @media (max-width: 968px) {
-  .features-grid {
+  .features { padding: 90px 0 110px; }
+
+  .models-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .model-card.featured {
+    grid-column: span 2;
   }
 }
 
-@media (max-width: 480px) {
-  .features-grid {
+@media (max-width: 640px) {
+  .features { padding: 70px 0 90px; }
+
+  .models-grid {
     grid-template-columns: 1fr;
+    gap: 14px;
   }
 
-  .feature-card {
-    padding: 32px 24px;
+  .model-card.featured {
+    grid-column: span 1;
   }
+
+  .model-card {
+    padding: 22px 18px 18px;
+  }
+
+  .model-icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .model-title { font-size: 17px; }
 }

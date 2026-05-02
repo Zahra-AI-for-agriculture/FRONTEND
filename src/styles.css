@@ -361,3 +361,8 @@ button {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-green);
 }
+
+/* ── Hero background image (must be in global CSS for Vite to resolve the asset URL correctly) ── */
+.hero-bg {
+  background-image: url('/assets/images/bg.png');
+}

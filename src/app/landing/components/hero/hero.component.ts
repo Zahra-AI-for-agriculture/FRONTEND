@@ -12,6 +12,7 @@ export class HeroComponent implements OnInit {
   constructor(public lang: LanguageService) {}
 
   ngOnInit(): void {
+    // Stagger the reveal animation slightly after component mounts
     setTimeout(() => {
       this.isVisible = true;
     }, 200);

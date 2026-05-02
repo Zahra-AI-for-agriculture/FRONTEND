@@ -3,19 +3,11 @@
    ═══════════════════════════════════════════ */
 
 .cta-section {
-  background: var(--color-dark-green-1);
+  background: transparent;
   position: relative;
 }
 
-.cta-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
-}
+.cta-section::before { display: none; }
 
 /* ── Wrapper ── */
 .cta-wrapper {

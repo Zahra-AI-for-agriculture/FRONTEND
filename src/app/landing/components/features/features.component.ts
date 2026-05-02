@@ -1,12 +1,18 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { LanguageService } from '../../../services/language.service';
 
-interface Feature {
-  svgPath: string;
+interface MLModel {
+  id: string;
+  tag: string;
+  svgPaths: string[];
+  accentColor: string;
   titleKey: string;
-  actionKey: string;
-  gradient: string;
-  iconColor: string;
+  hookKey: string;
+  metricValue: string;
+  metricLabelKey: string;
+  inputKey: string;
+  outputKey: string;
+  featured?: boolean;
 }
 
 @Component({
@@ -17,48 +23,91 @@ interface Feature {
 export class FeaturesComponent implements OnInit {
   isVisible = false;
 
-  features: Feature[] = [
+  models: MLModel[] = [
     {
-      svgPath: 'M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10z',
-      titleKey: 'feature.disease.title',
-      actionKey: 'feature.disease.action',
-      gradient: 'linear-gradient(135deg, rgba(76, 175, 80, 0.15), rgba(76, 175, 80, 0.05))',
-      iconColor: '#4caf50'
+      id: 'disease',
+      tag: 'M1',
+      svgPaths: ['M11 3a8 8 0 1 0 0 16 8 8 0 0 0 0-16z', 'M21 21l-4.35-4.35'],
+      accentColor: '#4caf50',
+      titleKey: 'model.disease.title',
+      hookKey: 'model.disease.hook',
+      metricValue: '98.6%',
+      metricLabelKey: 'model.disease.metric',
+      inputKey: 'model.disease.input',
+      outputKey: 'model.disease.output',
+      featured: true
     },
     {
-      svgPath: 'M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z M8 2v16 M16 6v16',
-      titleKey: 'feature.ndvi.title',
-      actionKey: 'feature.ndvi.action',
-      gradient: 'linear-gradient(135deg, rgba(41, 182, 246, 0.15), rgba(41, 182, 246, 0.05))',
-      iconColor: '#29b6f6'
+      id: 'yield',
+      tag: 'M2',
+      svgPaths: ['M23 6l-9.5 9.5-5-5L1 18', 'M17 6h6v6'],
+      accentColor: '#f9a825',
+      titleKey: 'model.yield.title',
+      hookKey: 'model.yield.hook',
+      metricValue: 'R² 0.95',
+      metricLabelKey: 'model.yield.metric',
+      inputKey: 'model.yield.input',
+      outputKey: 'model.yield.output'
     },
     {
-      svgPath: 'M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z',
-      titleKey: 'feature.irrigation.title',
-      actionKey: 'feature.irrigation.action',
-      gradient: 'linear-gradient(135deg, rgba(0, 188, 212, 0.15), rgba(0, 188, 212, 0.05))',
-      iconColor: '#00bcd4'
+      id: 'drought',
+      tag: 'M3',
+      svgPaths: ['M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z'],
+      accentColor: '#ff7043',
+      titleKey: 'model.drought.title',
+      hookKey: 'model.drought.hook',
+      metricValue: 'MAE 0.46',
+      metricLabelKey: 'model.drought.metric',
+      inputKey: 'model.drought.input',
+      outputKey: 'model.drought.output'
     },
     {
-      svgPath: 'M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9 M13.73 21a2 2 0 0 1-3.46 0',
-      titleKey: 'feature.weather.title',
-      actionKey: 'feature.weather.action',
-      gradient: 'linear-gradient(135deg, rgba(249, 168, 37, 0.15), rgba(249, 168, 37, 0.05))',
-      iconColor: '#f9a825'
+      id: 'segmentation',
+      tag: 'M4',
+      svgPaths: ['M3 3h7v7H3z', 'M14 3h7v7h-7z', 'M14 14h7v7h-7z', 'M3 14h7v7H3z'],
+      accentColor: '#ab47bc',
+      titleKey: 'model.segmentation.title',
+      hookKey: 'model.segmentation.hook',
+      metricValue: '99.1%',
+      metricLabelKey: 'model.segmentation.metric',
+      inputKey: 'model.segmentation.input',
+      outputKey: 'model.segmentation.output'
     },
     {
-      svgPath: 'M12 1v22 M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6',
-      titleKey: 'feature.market.title',
-      actionKey: 'feature.market.action',
-      gradient: 'linear-gradient(135deg, rgba(255, 183, 77, 0.15), rgba(255, 183, 77, 0.05))',
-      iconColor: '#ffb74d'
+      id: 'irrigation',
+      tag: 'M5',
+      svgPaths: ['M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z'],
+      accentColor: '#00bcd4',
+      titleKey: 'model.irrigation.title',
+      hookKey: 'model.irrigation.hook',
+      metricValue: '0.52mm',
+      metricLabelKey: 'model.irrigation.metric',
+      inputKey: 'model.irrigation.input',
+      outputKey: 'model.irrigation.output'
     },
     {
-      svgPath: 'M1 1l22 22 M16.72 11.06A10.94 10.94 0 0 1 19 12.55 M5 12.55a10.94 10.94 0 0 1 5.17-2.39 M10.71 5.05A16 16 0 0 1 22.56 9 M1.42 9a15.91 15.91 0 0 1 4.7-2.88 M8.53 16.11a6 6 0 0 1 6.95 0 M12 20h.01',
-      titleKey: 'feature.offline.title',
-      actionKey: 'feature.offline.action',
-      gradient: 'linear-gradient(135deg, rgba(141, 110, 99, 0.15), rgba(141, 110, 99, 0.05))',
-      iconColor: '#8d6e63'
+      id: 'ndvi',
+      tag: 'M6',
+      svgPaths: ['M22 12h-4l-3 9L9 3l-3 9H2'],
+      accentColor: '#29b6f6',
+      titleKey: 'model.ndvi.title',
+      hookKey: 'model.ndvi.hook',
+      metricValue: '99.7%',
+      metricLabelKey: 'model.ndvi.metric',
+      inputKey: 'model.ndvi.input',
+      outputKey: 'model.ndvi.output'
+    },
+    {
+      id: 'pest',
+      tag: 'M7',
+      svgPaths: ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'],
+      accentColor: '#ef5350',
+      titleKey: 'model.pest.title',
+      hookKey: 'model.pest.hook',
+      metricValue: '73.5%',
+      metricLabelKey: 'model.pest.metric',
+      inputKey: 'model.pest.input',
+      outputKey: 'model.pest.output'
     }
   ];
 
@@ -77,7 +126,7 @@ export class FeaturesComponent implements OnInit {
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.1 }
     );
     observer.observe(this.el.nativeElement);
   }
