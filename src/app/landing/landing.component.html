@@ -8,6 +8,30 @@
   <app-stats></app-stats>
   <app-problem></app-problem>
   <app-cta></app-cta>
+
+  <!-- Section Cartographie -->
+  <div style="display: flex; justify-content: center; padding: 40px 0; background: transparent;">
+    <a routerLink="/cartographie" 
+       style="
+         background-color: #1a5c2a;
+         color: white;
+         padding: 16px 32px;
+         border-radius: 8px;
+         text-decoration: none;
+         font-weight: 600;
+         font-size: 1.1rem;
+         transition: opacity 0.3s ease, transform 0.2s ease;
+         display: inline-block;
+         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+         cursor: pointer;
+       "
+       onmouseover="this.style.opacity='0.85'; this.style.transform='scale(1.02)'"
+       onmouseout="this.style.opacity='1'; this.style.transform='scale(1)'"
+    >
+      🌿 Cartographie des Oliveraies
+    </a>
+  </div>
+
   <app-footer></app-footer>
 
 </div>

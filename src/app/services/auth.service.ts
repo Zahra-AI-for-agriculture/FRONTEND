@@ -11,7 +11,7 @@ import { AUTH_CONSTANTS } from '../core/constants/auth.constants';
 })
 export class AuthService {
 
-  private readonly API = 'http://localhost:8000/api/v1/auth';
+  private readonly API = 'http://20.240.59.225:8000/api/v1/auth';
   private currentUser = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUser.asObservable();
 
@@ -29,7 +29,7 @@ export class AuthService {
     }
   }
 
-  private apiUrl = 'http://localhost:8000/api/v1';
+  private apiUrl = 'http://20.240.59.225:8000/api/v1';
 
   login(phone: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/auth/login`,

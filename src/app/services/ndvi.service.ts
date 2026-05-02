@@ -7,7 +7,7 @@ import { NDVIResult, NDVIHistory, NDVICompare, NDVICoverage } from '../models';
 @Injectable({ providedIn: 'root' })
 export class NDVIService {
 
-  private readonly API = 'http://localhost:8000/api/v1/ndvi';
+  private readonly API = 'http://20.240.59.225:8000/api/v1/ndvi';
 
   constructor(private http: HttpClient) {}
 

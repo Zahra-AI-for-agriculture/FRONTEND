@@ -7,7 +7,7 @@ import { Post, Reply, Advisor } from '../models';
 @Injectable({ providedIn: 'root' })
 export class CommunityService {
 
-  private readonly API = 'http://localhost:8000/api/v1/community';
+  private readonly API = 'http://20.240.59.225:8000/api/v1/community';
 
   constructor(private http: HttpClient) {}
 

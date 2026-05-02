@@ -7,7 +7,7 @@ import { Parcel, ParcelHistory, HealthScore } from '../models';
 @Injectable({ providedIn: 'root' })
 export class ParcelsService {
 
-  private readonly API = 'http://localhost:8000/api/v1/parcels';
+  private readonly API = 'http://20.240.59.225:8000/api/v1/parcels';
 
   constructor(private http: HttpClient) {}
 

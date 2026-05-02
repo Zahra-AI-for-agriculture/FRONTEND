@@ -6,7 +6,7 @@ import { SyncPush, SyncPull } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class SyncService {
-  private readonly API = 'http://localhost:8000/api/v1/sync';
+  private readonly API = 'http://20.240.59.225:8000/api/v1/sync';
   constructor(private http: HttpClient) {}
 
   pushData(data: SyncPush): Observable<unknown> {

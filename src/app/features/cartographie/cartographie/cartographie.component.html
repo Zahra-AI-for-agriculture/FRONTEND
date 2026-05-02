@@ -1,0 +1,249 @@
+<style>
+  .carto-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    color: #2c3e50;
+    font-family: 'Inter', sans-serif;
+    background: #f8f9fa;
+  }
+  .carto-header {
+    background: #1a5c2a;
+    color: white;
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    flex-shrink: 0;
+  }
+  .carto-header h1 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.5px;
+  }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  #status {
+    font-size: 0.8rem;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    margin-right: 8px;
+    font-weight: 500;
+  }
+  .header-actions button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary { background: #27ae60; color: white; }
+  .btn-danger { background: #e74c3c; color: white; }
+  .btn-export { background: #2980b9; color: white; }
+  .header-actions button:hover { opacity: 0.9; transform: translateY(-1px); }
+  .header-actions button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .map-container {
+    position: relative;
+    flex: 1;
+    width: 100%;
+    background: #e5e5e5;
+  }
+  #map {
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  /* OVERLAYS */
+  .overlay-panel {
+    position: absolute;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    z-index: 1000;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+
+  /* Stats Overlay (Bottom Left) */
+  .stats-overlay {
+    bottom: 24px;
+    left: 24px;
+    width: 400px;
+    padding: 20px;
+    display: none; /* Piloté par la logique */
+  }
+  .stats-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #1a5c2a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #edf2f7;
+  }
+  .stat-card .value { font-size: 1.4rem; font-weight: 800; color: #1a5c2a; display: block; }
+  .stat-card .label { font-size: 0.65rem; color: #718096; text-transform: uppercase; font-weight: 600; margin-top: 2px; }
+
+  .stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75rem;
+  }
+  .stats-table th { text-align: left; padding: 8px; color: #718096; font-weight: 600; border-bottom: 2px solid #f7fafc; }
+  .stats-table td { padding: 10px 8px; border-bottom: 1px solid #f7fafc; }
+
+  /* Matrix Overlay (Bottom Right) */
+  .matrix-overlay {
+    bottom: 24px;
+    right: 24px;
+    width: 280px;
+    padding: 14px;
+  }
+  .matrix-title { font-size: 0.8rem; font-weight: 700; margin-bottom: 10px; color: #1a5c2a; }
+  .matrix-overlay img { width: 100%; border-radius: 6px; border: 1px solid #edf2f7; }
+
+  /* Legend Overlay (Top Right) */
+  .legend-overlay {
+    top: 24px;
+    right: 24px;
+    padding: 14px 18px;
+    min-width: 180px;
+  }
+  .legend-title { font-weight: 700; font-size: 0.85rem; margin-bottom: 10px; color: #1a5c2a; }
+  .legend-item { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; font-size: 0.8rem; font-weight: 500; }
+  .legend-color { width: 18px; height: 12px; border-radius: 3px; }
+
+  /* Loading Overlay */
+  .loader-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+  }
+  .loader-box {
+    background: white;
+    padding: 32px 48px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  }
+  .spinner {
+    width: 44px; height: 44px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #1a5c2a;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+  }
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+</style>
+
+<div class="carto-wrapper">
+  <header class="carto-header">
+    <h1>OliveAI — Tunisie</h1>
+    <div class="header-actions">
+      <span id="status">Initialisation...</span>
+      <button id="analyzeBtn" class="btn-primary">Analyser la zone</button>
+      <button id="clearBtn" class="btn-danger">Effacer</button>
+      <button id="exportBtn" class="btn-export" style="display: none;">Exporter GeoJSON</button>
+    </div>
+  </header>
+
+  <main class="map-container">
+    <div id="map"></div>
+
+    <!-- Panel Stats (Bottom Left Overlay) -->
+    <div class="overlay-panel stats-overlay" id="statsPanel">
+      <div class="stats-title">Résultats de détection</div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="value" id="totalOliveraies">0</span>
+          <span class="label">Unités</span>
+        </div>
+        <div class="stat-card">
+          <span class="value" id="totalSurface">0</span>
+          <span class="label">Total (ha)</span>
+        </div>
+        <div class="stat-card">
+          <span class="value" id="surfaceMoy">0</span>
+          <span class="label">Moy. (ha)</span>
+        </div>
+      </div>
+      <table class="stats-table">
+        <thead>
+          <tr>
+            <th>Système</th>
+            <th>Nombre</th>
+            <th>Surface (ha)</th>
+            <th>Moyenne</th>
+          </tr>
+        </thead>
+        <tbody id="systemTableBody"></tbody>
+      </table>
+    </div>
+
+    <!-- Matrice de Confusion (Bottom Right Overlay) -->
+    <div class="overlay-panel matrix-overlay">
+      <div class="matrix-title">Classification RF</div>
+      <img src="http://20.240.59.225:8000/confusion-matrix" alt="Confusion Matrix" />
+    </div>
+
+    <!-- Légende (Top Right Overlay) -->
+    <div class="overlay-panel legend-overlay">
+      <div class="legend-title">Systèmes oléicoles</div>
+      <div class="legend-item">
+        <div class="legend-color" style="background:#27ae60"></div> Extensif
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background:#f39c12"></div> Intensif
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background:#e74c3c"></div> Hyper-intensif
+      </div>
+    </div>
+  </main>
+
+  <!-- Loader Overlay -->
+  <div class="loader-overlay" id="loadingOverlay">
+    <div class="loader-box">
+      <div class="spinner"></div>
+      <div id="loadingMsg" style="font-weight: 700; color: #1a5c2a; font-size: 1.1rem;">Analyse en cours...</div>
+      <div style="font-size: 0.8rem; color: #718096; margin-top: 8px;">U-Net + Random Forest</div>
+    </div>
+  </div>
+</div>
+

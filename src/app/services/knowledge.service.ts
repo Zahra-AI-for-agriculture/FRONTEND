@@ -7,7 +7,7 @@ import { Crop, CropCalendar, SoilType, Subsidy, Seed } from '../models';
 @Injectable({ providedIn: 'root' })
 export class KnowledgeService {
 
-  private readonly API = 'http://localhost:8000/api/v1/knowledge';
+  private readonly API = 'http://20.240.59.225:8000/api/v1/knowledge';
 
   constructor(private http: HttpClient) {}
 

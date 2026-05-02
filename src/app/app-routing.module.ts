@@ -20,6 +20,7 @@ const routes: Routes = [
   { path: 'irrigation', canActivate: [AuthGuard], loadChildren: () => import('./features/irrigation/irrigation.module').then(m => m.IrrigationModule) },
   { path: 'ai/pest', canActivate: [AuthGuard], loadChildren: () => import('./features/pest/pest.module').then(m => m.PestModule) },
   { path: 'ndvi', canActivate: [AuthGuard], loadChildren: () => import('./features/ndvi/ndvi.module').then(m => m.NdviModule) },
+  { path: 'cartographie', loadChildren: () => import('./features/cartographie/cartographie.module').then(m => m.CartographieModule) },
   { path: '**', redirectTo: '' }
 ];
 

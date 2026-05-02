@@ -7,7 +7,7 @@ import { MarketPrice, PriceHistory, SellAdvice, RevenueForecast, Buyer } from '.
 @Injectable({ providedIn: 'root' })
 export class MarketService {
 
-  private readonly API = 'http://localhost:8000/api/v1/market';
+  private readonly API = 'http://20.240.59.225:8000/api/v1/market';
 
   constructor(private http: HttpClient) {}
 

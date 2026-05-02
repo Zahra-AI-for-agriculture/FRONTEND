@@ -7,7 +7,7 @@ import { Dashboard, CampaignReport, FinancialReport, SustainabilityReport } from
 @Injectable({ providedIn: 'root' })
 export class ReportsService {
 
-  private readonly API = 'http://localhost:8000/api/v1/reports';
+  private readonly API = 'http://20.240.59.225:8000/api/v1/reports';
 
   constructor(private http: HttpClient) {}
 

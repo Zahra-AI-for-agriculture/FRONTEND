@@ -7,7 +7,7 @@ import { Pesticide, TreatmentLogEntry, TreatmentLog, DARReminder, Prescription }
 @Injectable({ providedIn: 'root' })
 export class TreatmentsService {
 
-  private readonly API = 'http://localhost:8000/api/v1/treatments';
+  private readonly API = 'http://20.240.59.225:8000/api/v1/treatments';
 
   constructor(private http: HttpClient) {}
 
