@@ -1,43 +1,49 @@
 /* ═══════════════════════════════════════════
-   Stats Component — Big numbers, no text
+   Stats — Dark forest, consistent with pipeline & features
    ═══════════════════════════════════════════ */
 
 .stats {
-  background: linear-gradient(180deg,
-    var(--color-dark-green-1) 0%,
-    var(--color-dark-green-2) 100%
-  );
   position: relative;
+  background: transparent;
+  padding: 100px 0 120px;
+  overflow: hidden;
 }
 
 .stats::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 10%; right: 10%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+  background: linear-gradient(90deg, transparent, rgba(168, 214, 114, 0.15), transparent);
 }
 
 /* ── Grid ── */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  gap: 20px;
 }
 
 /* ── Card ── */
 .stat-card {
   text-align: center;
-  padding: 48px 24px;
+  padding: 44px 24px 36px;
   position: relative;
   overflow: hidden;
   opacity: 0;
   transform: translateY(30px) scale(0.95);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out,
-              background 0.3s ease, border-color 0.3s ease;
+  transition:
+    opacity      0.6s ease-out,
+    transform    0.6s ease-out,
+    border-color 0.3s ease,
+    box-shadow   0.3s ease,
+    background   0.3s ease;
   transition-delay: var(--stat-delay);
+
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.09) !important;
+  border-radius: 22px;
+  box-shadow: none !important;
 }
 
 .stat-card.visible {
@@ -46,56 +52,68 @@
 }
 
 .stat-card:hover {
-  border-color: var(--stat-color);
-  box-shadow: 0 0 40px rgba(76, 175, 80, 0.12);
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: var(--stat-color) !important;
+  box-shadow:
+    0 0 0 1px var(--stat-color),
+    0 16px 48px rgba(0, 0, 0, 0.25),
+    0 0 40px color-mix(in srgb, var(--stat-color) 20%, transparent) !important;
+  transform: translateY(-6px) scale(1.02);
 }
 
-/* Icon Ring */
+/* ── Icon ring ── */
 .stat-icon-ring {
-  width: 72px;
-  height: 72px;
-  margin: 0 auto 24px;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 22px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.04);
-  border: 2px solid rgba(255, 255, 255, 0.08);
+  background: color-mix(in srgb, var(--stat-color) 12%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--stat-color) 25%, transparent);
   border-radius: 50%;
-  transition: var(--transition-base);
   color: var(--stat-color);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background 0.3s ease, border-color 0.3s ease;
 }
 
 .stat-card:hover .stat-icon-ring {
-  border-color: var(--stat-color);
-  transform: scale(1.1);
+  transform: scale(1.12);
+  background: color-mix(in srgb, var(--stat-color) 20%, transparent);
+  border-color: color-mix(in srgb, var(--stat-color) 40%, transparent);
 }
 
-/* Value — HUGE for impact */
+/* ── Value ── */
 .stat-value {
-  font-size: var(--font-size-5xl);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(40px, 4.5vw, 56px);
   font-weight: 900;
-  color: var(--color-white);
+  color: #ffffff;
   margin-bottom: 8px;
   line-height: 1;
+  letter-spacing: -1px;
 }
 
 .stat-suffix {
-  font-size: var(--font-size-3xl);
-  color: var(--color-accent-green);
+  font-size: clamp(28px, 3vw, 38px);
+  color: var(--stat-color);
+  font-weight: 900;
 }
 
-/* Label — short */
+/* ── Label ── */
 .stat-label {
-  font-size: var(--font-size-base);
-  color: var(--color-gray-200);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: rgba(212, 237, 186, 0.65);
   font-weight: 600;
   margin-bottom: 20px;
+  letter-spacing: 0.2px;
 }
 
-/* Decorative bar */
+/* ── Decorative bar ── */
 .stat-bar {
-  width: 60px;
-  height: 3px;
+  width: 40px;
+  height: 2.5px;
   background: rgba(255, 255, 255, 0.08);
   border-radius: 2px;
   margin: 0 auto;
@@ -122,16 +140,20 @@
 }
 
 @media (max-width: 480px) {
+  .stats {
+    padding: 72px 0 88px;
+  }
+
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    gap: 14px;
   }
 
   .stat-card {
-    padding: 36px 16px;
+    padding: 32px 16px 28px;
   }
 
   .stat-value {
-    font-size: var(--font-size-4xl);
+    font-size: clamp(32px, 8vw, 44px);
   }
 }
