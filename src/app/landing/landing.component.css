@@ -1,4 +1,10 @@
-/* Landing page — no additional styles needed, all styles come from child components */
+/* App root - minimal styles */
 :host {
   display: block;
+  min-height: 100vh;
+}
+
+.rtl {
+  direction: rtl;
+  text-align: right;
 }

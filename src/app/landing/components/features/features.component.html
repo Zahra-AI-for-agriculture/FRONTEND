@@ -2,32 +2,54 @@
   <div class="container">
     <!-- Section Header -->
     <div class="section-header">
+      <div class="section-badge">{{ lang.t('features.badge') }}</div>
       <h2 class="section-title">{{ lang.t('features.title') }}</h2>
+      <p class="section-subtitle">{{ lang.t('features.subtitle') }}</p>
     </div>
 
-    <!-- Features Grid -->
-    <div class="features-grid">
-      <div class="feature-card glass-card"
-           *ngFor="let feature of features; let i = index"
+    <!-- Models Grid -->
+    <div class="models-grid">
+      <div class="model-card"
+           *ngFor="let model of models; let i = index"
+           [class.featured]="model.featured"
            [class.visible]="isVisible"
-           [style.--card-delay]="(i * 0.12) + 's'"
-           [style.--card-gradient]="feature.gradient"
-           [style.--icon-color]="feature.iconColor">
+           [style.--card-delay]="(i * 0.08) + 's'"
+           [style.--accent]="model.accentColor">
+
+        <!-- Accent bar top -->
+        <div class="model-accent"></div>
+
+        <!-- Header: tag + metric -->
+        <div class="model-header">
+          <span class="model-tag">{{ model.tag }}</span>
+          
+        </div>
+
         <!-- Icon -->
-        <div class="feature-icon-wrapper">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path [attr.d]="feature.svgPath"/>
+        <div class="model-icon">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path *ngFor="let p of model.svgPaths" [attr.d]="p"/>
           </svg>
         </div>
 
-        <!-- Title — short -->
-        <h3 class="feature-title">{{ lang.t(feature.titleKey) }}</h3>
+        <!-- Title + hook -->
+        <h3 class="model-title">{{ lang.t(model.titleKey) }}</h3>
+        <p class="model-hook">{{ lang.t(model.hookKey) }}</p>
 
-        <!-- Action — 2-3 words -->
-        <p class="feature-action">{{ lang.t(feature.actionKey) }}</p>
+        <!-- I/O flow -->
+        <div class="model-io">
+          <span class="io-in">{{ lang.t(model.inputKey) }}</span>
+          <svg class="io-arrow" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+          <span class="io-out">{{ lang.t(model.outputKey) }}</span>
+        </div>
 
-        <!-- Hover glow -->
-        <div class="feature-glow"></div>
+        <!-- Glow -->
+        <div class="model-glow"></div>
       </div>
     </div>
   </div>

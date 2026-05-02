@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
+import { LandingRoutingModule } from './landing-routing.module';
 
 import { LandingComponent } from './landing.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -12,10 +12,6 @@ import { ProblemComponent } from './components/problem/problem.component';
 import { CtaComponent } from './components/cta/cta.component';
 import { FooterComponent } from './components/footer/footer.component';
 
-const routes: Routes = [
-  { path: '', component: LandingComponent }
-];
-
 @NgModule({
   declarations: [
     LandingComponent,
@@ -26,11 +22,11 @@ const routes: Routes = [
     StatsComponent,
     ProblemComponent,
     CtaComponent,
-    FooterComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes),
+    LandingRoutingModule
   ]
 })
 export class LandingModule {}
