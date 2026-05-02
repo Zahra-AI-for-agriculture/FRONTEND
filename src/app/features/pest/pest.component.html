@@ -1,0 +1,106 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1> Ravageurs / الآفات</h1>
+    <p class="page-sub">Prédiction des risques — Modèle M7</p>
+  </div>
+
+  <div class="parcel-selector" *ngIf="parcels.length > 0">
+    <button class="parcel-tab"
+            *ngFor="let p of parcels"
+            [class.active]="selectedParcel?.id === p.id"
+            (click)="selectParcel(p)">
+       {{ p.name }}
+    </button>
+  </div>
+
+  <div class="risk-card" *ngIf="pestRisk && !isLoading">
+    <div class="risk-header">
+      <div class="risk-level-badge"
+           [style.background]="getRiskColor(pestRisk.risk_level) + '20'"
+           [style.color]="getRiskColor(pestRisk.risk_level)"
+           [style.borderColor]="getRiskColor(pestRisk.risk_level)">
+        {{ pestRisk.risk_level }}
+      </div>
+      <div class="risk-score">
+        Score : {{ (pestRisk.risk_score * 100) | number:'1.0-0' }}%
+      </div>
+    </div>
+
+    <div class="pests-list">
+      <h4> Ravageurs probables / الآفات المحتملة</h4>
+      <div class="pest-tag"
+           *ngFor="let pest of pestRisk.likely_pests || []">
+        {{ pest }}
+      </div>
+    </div>
+
+    <div class="prevention-box">
+      <h4> Prévention</h4>
+      <p>{{ pestRisk.prevention_fr }}</p>
+      <p class="prev-ar">{{ pestRisk.prevention_ar }}</p>
+    </div>
+  </div>
+
+  <div class="top3-card" *ngIf="pestResult?.top3_risks">
+    <h3> Analyse détaillée</h3>
+    <div class="top3-item"
+         *ngFor="let item of pestResult.top3_risks">
+      <span class="top3-name">{{ item.pest }}</span>
+      <div class="top3-bar">
+        <div class="top3-fill"
+             [style.width.%]="item.probability">
+        </div>
+      </div>
+      <span class="top3-pct">{{ item.probability }}%</span>
+    </div>
+  </div>
+
+  <div class="calc-card">
+    <h3> Analyse personnalisée / تحليل مخصص</h3>
+    <div class="calc-grid">
+      <div class="form-group">
+        <label>Culture</label>
+        <select [(ngModel)]="form.crop" name="crop">
+          <option value="Olivier"> Olivier</option>
+          <option value="Tomate"> Tomate</option>
+          <option value="Blé dur"> Blé dur</option>
+          <option value="Piment"> Piment</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Mois / الشهر</label>
+        <input type="number" [(ngModel)]="form.month"
+               name="month" min="1" max="12"/>
+      </div>
+      <div class="form-group">
+        <label>Température °C</label>
+        <input type="number" [(ngModel)]="form.temperature" name="temp"/>
+      </div>
+      <div class="form-group">
+        <label>Humidité %</label>
+        <input type="number" [(ngModel)]="form.humidity" name="hum"/>
+      </div>
+      <div class="form-group">
+        <label>Pluie 30j mm</label>
+        <input type="number" [(ngModel)]="form.rainfall_last_30d" name="rain"/>
+      </div>
+    </div>
+    <button class="btn-calc" (click)="analyze()" [disabled]="calcLoading">
+      {{ calcLoading ? ' Analyse...' : ' Analyser' }}
+    </button>
+
+    <div class="pest-result" *ngIf="pestResult">
+      <div class="pest-result-header"
+           [style.color]="getRiskColor(pestResult.risk_level)">
+        <strong>{{ pestResult.risk_level }}</strong>
+        — {{ pestResult.pest_detected }}
+        ({{ pestResult.probability }}%)
+      </div>
+      <p>{{ pestResult.treatment }}</p>
+      <p class="window-info"> {{ pestResult.treatment_window }}</p>
+      <div class="crda-alert" *ngIf="pestResult.notify_crda">
+         Signalement CRDA obligatoire / إبلاغ CRDA إلزامي
+      </div>
+    </div>
+  </div>
+</div>

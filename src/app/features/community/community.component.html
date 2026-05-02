@@ -1,0 +1,129 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1> Communauté / المجتمع</h1>
+    <p class="page-sub">Forum agriculteurs + Conseillers agronomes</p>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn" [class.active]="activeTab==='forum'"
+            (click)="activeTab='forum';selectedPost=null">
+       Forum
+    </button>
+    <button class="tab-btn" [class.active]="activeTab==='advisors'"
+            (click)="activeTab='advisors'">
+       Conseillers
+    </button>
+  </div>
+
+  <div *ngIf="activeTab === 'forum'">
+    <button class="btn-new-post" (click)="showNewPost = !showNewPost">
+      {{ showNewPost ? ' Annuler' : ' Nouveau post / منشور جديد' }}
+    </button>
+
+    <div class="new-post-form" *ngIf="showNewPost">
+      <div class="form-group">
+        <label>Titre / العنوان</label>
+        <input type="text" [(ngModel)]="newPost.title"
+               name="title" placeholder="Sujet de votre question..."/>
+      </div>
+      <div class="form-group">
+        <label>Message / الرسالة</label>
+        <textarea [(ngModel)]="newPost.body_ar" name="body"
+                  rows="3" placeholder="Décrivez votre problème...">
+        </textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Culture / المحصول</label>
+          <input type="text" [(ngModel)]="newPost.crop" name="crop"/>
+        </div>
+        <div class="form-group">
+          <label>Région / المنطقة</label>
+          <input type="text" [(ngModel)]="newPost.region" name="region"/>
+        </div>
+      </div>
+      <button class="btn-submit" (click)="createPost()">
+         Publier
+      </button>
+    </div>
+
+    <div class="posts-layout" *ngIf="!selectedPost">
+      <div class="post-card"
+           *ngFor="let post of posts"
+           (click)="selectPost(post)">
+        <div class="post-header">
+          <span class="post-crop" *ngIf="post.crop">{{ post.crop }}</span>
+          <span class="post-region" *ngIf="post.region">{{ post.region }}</span>
+        </div>
+        <h3>{{ post.title }}</h3>
+        <p class="post-body">{{ post.body_ar }}</p>
+        <div class="post-footer">
+          <span> {{ post.likes || 0 }}</span>
+          <span> Voir les réponses </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="post-detail" *ngIf="selectedPost">
+      <button class="btn-back-post" (click)="selectedPost=null">
+         Retour
+      </button>
+      <div class="post-card selected">
+        <h3>{{ selectedPost.title }}</h3>
+        <p>{{ selectedPost.body_ar }}</p>
+      </div>
+      <h4 class="replies-title">
+         Réponses ({{ replies.length }})
+      </h4>
+      <div class="reply-item" *ngFor="let r of replies">
+        <div class="reply-avatar">
+          {{ r.farmer_id }}
+        </div>
+        <div class="reply-content">
+          <p>{{ r.body_ar }}</p>
+          <span>{{ r.created_at | date:'dd/MM HH:mm' }}</span>
+        </div>
+      </div>
+      <div class="reply-form">
+        <textarea [(ngModel)]="newReply.body_ar" name="reply"
+                  rows="2" placeholder="Votre réponse...">
+        </textarea>
+        <button class="btn-reply" (click)="addReply()">
+           Répondre
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="activeTab === 'advisors'">
+    <div class="advisors-grid">
+      <div class="advisor-card"
+           *ngFor="let a of advisors">
+        <div class="advisor-avatar">
+          {{ a.name?.charAt(0) }}
+        </div>
+        <div class="advisor-info">
+          <h3>{{ a.name }}</h3>
+          <span class="advisor-spec">{{ a.specialty }}</span>
+          <span class="advisor-region"> {{ a.region }}</span>
+        </div>
+        <div class="advisor-actions">
+          <span class="advisor-status"
+                [class.available]="a.available">
+            {{ a.available ? ' Disponible' : ' Occupé' }}
+          </span>
+          <button class="btn-contact"
+                  [disabled]="!a.available"
+                  (click)="contactAdvisor(a.id)">
+             Contacter
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="empty-state" *ngIf="advisors.length === 0">
+      <span></span><p>Aucun conseiller disponible</p>
+    </div>
+  </div>
+
+</div>

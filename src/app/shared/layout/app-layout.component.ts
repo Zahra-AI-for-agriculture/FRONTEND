@@ -15,21 +15,72 @@ export class AppLayoutComponent implements OnInit {
   sidebarOpen  = true;
   currentRoute = '';
 
-  readonly navItems = [
-    { path: '/dashboard',    icon: '', label: 'Tableau de bord' },
-    { path: '/parcels',      icon: '️', label: 'Mes Parcelles'   },
-    { path: '/ai/disease',   icon: '', label: 'Diagnostic IA'   },
-    { path: '/ai/irrigation',icon: '', label: 'Irrigation'      },
-    { path: '/ai/drought',   icon: '️', label: 'Sécheresse'      },
-    { path: '/ai/pest',      icon: '', label: 'Ravageurs'       },
-    { path: '/weather',      icon: '️', label: 'Météo'           },
-    { path: '/market',       icon: '', label: 'Marché'          },
-    { path: '/alerts',       icon: '', label: 'Alertes'         },
-    { path: '/treatments',   icon: '', label: 'Traitements'     },
-    { path: '/knowledge',    icon: '', label: 'Connaissances'   },
-    { path: '/community',    icon: '', label: 'Communauté'      },
-    { path: '/reports',      icon: '', label: 'Rapports'        },
+  readonly navGroups: any[] = [
+    {
+      items: [
+        { path: '/dashboard', icon: '🏠', labelFr: 'Tableau de bord', labelAr: 'لوحة القيادة' }
+      ]
+    },
+    {
+      groupLabelFr: 'Mon Exploitation',
+      groupLabelAr: 'مزرعتي',
+      items: [
+        { path: '/parcels',    icon: '🗺️', labelFr: 'Mes Parcelles', labelAr: 'قطعي' },
+        { path: '/irrigation', icon: '💧', labelFr: 'Irrigation',    labelAr: 'الري' },
+        { path: '/treatments', icon: '💊', labelFr: 'Traitements',   labelAr: 'المعالجات' },
+      ]
+    },
+    {
+      groupLabelFr: 'Surveillance IA',
+      groupLabelAr: 'مراقبة الذكاء الاصطناعي',
+      items: [
+        { path: '/ai/disease', icon: '🔬', labelFr: 'Diagnostic',    labelAr: 'التشخيص' },
+        { path: '/ai/pest',    icon: '🐛', labelFr: 'Ravageurs',     labelAr: 'الآفات' },
+        { path: '/ndvi',       icon: '🛰️', labelFr: 'NDVI',          labelAr: 'مؤشر NDVI' },
+      ]
+    },
+    {
+      groupLabelFr: 'Climat & Eau',
+      groupLabelAr: 'المناخ والمياه',
+      items: [
+        { path: '/weather', icon: '🌤️', labelFr: 'Météo',      labelAr: 'الطقس' },
+        { path: '/drought', icon: '☀️', labelFr: 'Sécheresse', labelAr: 'الجفاف' },
+      ]
+    },
+    {
+      groupLabelFr: 'Business',
+      groupLabelAr: 'الأعمال',
+      items: [
+        { path: '/market',    icon: '📈', labelFr: 'Marché',        labelAr: 'السوق' },
+        { path: '/reports',   icon: '📊', labelFr: 'Rapports',      labelAr: 'التقارير' },
+        { path: '/knowledge', icon: '📚', labelFr: 'Connaissances', labelAr: 'المعرفة' },
+      ]
+    },
+    {
+      groupLabelFr: 'Communauté',
+      groupLabelAr: 'المجتمع',
+      items: [
+        { path: '/community', icon: '👥', labelFr: 'Forum',   labelAr: 'المنتدى' },
+        { path: '/alerts',    icon: '🔔', labelFr: 'Alertes', labelAr: 'التنبيهات',
+          badge: true },
+      ]
+    },
   ];
+
+  lang: 'fr' | 'ar' = 'fr';
+
+  toggleLang(): void {
+    this.lang = this.lang === 'fr' ? 'ar' : 'fr';
+  }
+
+  getLabel(item: any): string {
+    return this.lang === 'fr' ? item.labelFr : item.labelAr;
+  }
+
+  getGroupLabel(group: any): string {
+    if (!group.groupLabelFr) return '';
+    return this.lang === 'fr' ? group.groupLabelFr : group.groupLabelAr;
+  }
 
   constructor(
     private router: Router,

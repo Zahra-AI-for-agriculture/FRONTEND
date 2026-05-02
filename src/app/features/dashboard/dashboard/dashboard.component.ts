@@ -254,7 +254,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         this.governorate = dashboard.farmer?.governorate || 'Tunis';
 
         this.parcelsService.getParcels().subscribe({
-          next: (parcels) => {
+          next: (parcels: any) => {
             this.parcels = parcels || [];
             console.log('[DASHBOARD] Parcelles avec polygones:',
               this.parcels.map((p: any) => ({ name: p.name, hasPolygon: !!p.polygon_geojson }))

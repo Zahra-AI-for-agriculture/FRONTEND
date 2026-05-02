@@ -1,0 +1,106 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1> Marché / السوق</h1>
+    <p class="page-sub">Prix en temps réel + conseils de vente</p>
+  </div>
+
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spin"></div><p>Chargement...</p>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+
+    <div class="tab-bar">
+      <button class="tab-btn" [class.active]="activeTab==='prices'"   (click)="activeTab='prices'"> Prix</button>
+      <button class="tab-btn" [class.active]="activeTab==='advice'"   (click)="activeTab='advice'"> Conseils</button>
+      <button class="tab-btn" [class.active]="activeTab==='buyers'"   (click)="activeTab='buyers'"> Acheteurs</button>
+    </div>
+
+    <div *ngIf="activeTab === 'prices'">
+      <div class="prices-table">
+        <div class="price-row"
+             *ngFor="let item of prices">
+          <div class="price-crop">
+            <span class="price-market">{{ item.market }}</span>
+            <strong>{{ item.crop }}</strong>
+          </div>
+          <div class="price-right">
+            <span class="price-val">{{ item.price }} {{ item.unit }}</span>
+            <span class="price-trend" [class]="getTrendClass(item.trend)">
+              {{ getTrendIcon(item.trend) }} {{ item.trend }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="activeTab === 'advice'">
+      <div class="parcel-selector" *ngIf="parcels.length > 0">
+        <button class="parcel-tab"
+                *ngFor="let p of parcels"
+                [class.active]="selectedParcel?.id === p.id"
+                (click)="loadParcelAdvice(p)">
+           {{ p.name }}
+        </button>
+      </div>
+
+      <div class="advice-card" *ngIf="sellAdvice">
+        <div class="advice-header">
+          <span class="advice-icon"></span>
+          <div>
+            <h3>Conseil de vente / نصيحة البيع</h3>
+            <p>{{ sellAdvice.advice_fr }}</p>
+            <p class="advice-ar">{{ sellAdvice.advice_ar }}</p>
+          </div>
+          <div class="price-now">
+            <span class="pn-label">Prix actuel</span>
+            <span class="pn-val">{{ sellAdvice.current_price }} DT/kg</span>
+            <span class="pn-trend" [class]="getTrendClass(sellAdvice.trend)">
+              {{ getTrendIcon(sellAdvice.trend) }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="revenue-card" *ngIf="revenueForecast">
+        <h3> Revenu prévisionnel / الدخل المتوقع</h3>
+        <div class="revenue-grid">
+          <div class="rev-item">
+            <span> Culture</span>
+            <strong>{{ revenueForecast.crop }}</strong>
+          </div>
+          <div class="rev-item">
+            <span> Surface</span>
+            <strong>{{ revenueForecast.area_ha }} ha</strong>
+          </div>
+          <div class="rev-item">
+            <span> Rendement estimé</span>
+            <strong>{{ revenueForecast.estimated_yield_t_ha }} T/ha</strong>
+          </div>
+          <div class="rev-item highlight">
+            <span> Revenu estimé</span>
+            <strong>{{ revenueForecast.estimated_revenue_dt | number }} DT</strong>
+          </div>
+        </div>
+        <p class="rev-msg">{{ revenueForecast.message_fr }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="activeTab === 'buyers'">
+      <div class="buyers-list">
+        <div class="buyer-card" *ngFor="let b of buyers">
+          <div class="buyer-header">
+            <span class="buyer-type-badge">{{ b.type }}</span>
+            <h3>{{ b.name }}</h3>
+          </div>
+          <div class="buyer-details">
+            <span> {{ b.crops?.join(', ') }}</span>
+            <span> {{ b.region }}</span>
+            <span> {{ b.phone }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+</div>

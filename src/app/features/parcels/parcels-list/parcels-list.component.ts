@@ -85,7 +85,7 @@ export class ParcelsListComponent implements OnInit, OnDestroy {
   loadParcels(): void {
     this.isLoading = true;
     this.parcelsService.getParcels().subscribe({
-      next: (data) => {
+      next: (data: any) => {
         this.parcels = (data as any[]) || [];
         this.isLoading = false;
       },
@@ -253,7 +253,7 @@ export class ParcelsListComponent implements OnInit, OnDestroy {
 
   private callM4(imageBase64: string, clickX: number, clickY: number, tileCoords: { x: number, y: number }): void {
     this.aiService.segmentParcel(imageBase64, clickX, clickY).subscribe({
-      next: (result) => {
+      next: (result: any) => {
         this.segmentationLoading = false;
         if (result.polygon_geojson) {
           try {

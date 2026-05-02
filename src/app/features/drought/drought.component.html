@@ -1,0 +1,83 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1> Sécheresse / الجفاف</h1>
+    <p class="page-sub">Prévision SPI — {{ city }}</p>
+  </div>
+
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spin"></div><p>Analyse en cours...</p>
+  </div>
+
+  <ng-container *ngIf="!isLoading && drought">
+
+    <!-- Indicateur principal -->
+    <div class="drought-hero"
+         [style.background]="'linear-gradient(135deg, ' + getSpiColor(drought.drought_level) + '33, ' + getSpiColor(drought.drought_level) + '11'">
+      <div class="drought-main">
+        <div class="spi-circle"
+             [style.borderColor]="getSpiColor(drought.drought_level)">
+          <span class="spi-value"
+                [style.color]="getSpiColor(drought.drought_level)">
+            {{ drought.spi_index }}
+          </span>
+          <span class="spi-label">SPI</span>
+        </div>
+        <div class="drought-info">
+          <h2 [style.color]="getSpiColor(drought.drought_level)">
+            {{ drought.drought_level | titlecase }}
+          </h2>
+          <p>{{ drought.message_fr }}</p>
+          <p class="msg-ar">{{ drought.message_ar }}</p>
+          <div class="probability-bar">
+            <div class="prob-fill"
+                 [style.width.%]="drought.probability * 100"
+                 [style.background]="getSpiColor(drought.drought_level)">
+            </div>
+          </div>
+          <span class="prob-text">
+            Probabilité : {{ (drought.probability * 100) | number:'1.0-0' }}%
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Échelle SPI -->
+    <div class="spi-scale-card">
+      <h3> Échelle SPI / مقياس SPI</h3>
+      <div class="spi-scale">
+        <div class="scale-item" style="background:#dcfce7;color:#059669">
+          ≥ 0 — Normal / طبيعي
+        </div>
+        <div class="scale-item" style="background:#fef9c3;color:#ca8a04">
+          -1 à 0 — Légèrement sec / جاف قليلاً
+        </div>
+        <div class="scale-item" style="background:#fed7aa;color:#ea580c">
+          -2 à -1 — Modérément sec / جفاف معتدل 
+        </div>
+        <div class="scale-item" style="background:#fecaca;color:#dc2626">
+          ≤ -2 — Sécheresse sévère / جفاف شديد 
+        </div>
+      </div>
+    </div>
+
+    <!-- Conseil agricole -->
+    <div class="advice-card">
+      <h3> Conseil pour votre exploitation / نصيحة زراعية</h3>
+      <div class="advice-content">
+        <p *ngIf="drought.drought_level === 'normal'">
+           Conditions normales. Maintenez votre calendrier d'irrigation habituel.
+          / الظروف عادية. حافظ على جدول الري المعتاد.
+        </p>
+        <p *ngIf="drought.drought_level === 'modéré'">
+           Stress hydrique modéré prévu. Augmentez la fréquence d'irrigation 
+          et paillez vos cultures. / ضغط مائي معتدل متوقع. زد تكرار الري وقش محاصيلك.
+        </p>
+        <p *ngIf="drought.drought_level === 'sévère' || drought.drought_level === 'extrême'">
+           Sécheresse sévère. Contactez le CRDA immédiatement et activez 
+          l'irrigation d'urgence. / جفاف شديد. اتصل بـ CRDA فوراً وفعّل الري الطارئ.
+        </p>
+      </div>
+    </div>
+
+  </ng-container>
+</div>

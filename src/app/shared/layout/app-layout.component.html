@@ -11,17 +11,22 @@
 
     <!-- Navigation -->
     <nav class="sidebar-nav">
-      <a class="nav-item"
-         *ngFor="let item of navItems"
-         [routerLink]="item.path"
-         [class.active]="isActive(item.path)">
-        <span class="nav-icon">{{ item.icon }}</span>
-        <span class="nav-label" *ngIf="sidebarOpen">{{ item.label }}</span>
-        <span class="nav-badge"
-              *ngIf="item.path === '/alerts' && unreadAlerts > 0">
-          {{ unreadAlerts }}
-        </span>
-      </a>
+      <ng-container *ngFor="let group of navGroups">
+        <div class="nav-group-label" *ngIf="sidebarOpen && getGroupLabel(group)">
+          {{ getGroupLabel(group) }}
+        </div>
+        <a class="nav-item"
+           *ngFor="let item of group.items"
+           [routerLink]="item.path"
+           [class.active]="isActive(item.path)">
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span class="nav-label" *ngIf="sidebarOpen">{{ getLabel(item) }}</span>
+          <span class="nav-badge"
+                *ngIf="item.badge && unreadAlerts > 0">
+            {{ unreadAlerts }}
+          </span>
+        </a>
+      </ng-container>
     </nav>
 
     <!-- Footer sidebar -->
@@ -48,9 +53,12 @@
         {{ sidebarOpen ? '' : '' }}
       </button>
       <div class="topbar-right">
-        <span class="topbar-farmer">‍ {{ farmerName }}</span>
+        <button class="btn-lang" (click)="toggleLang()">
+          {{ lang === 'fr' ? 'AR' : 'FR' }}
+        </button>
+        <span class="topbar-farmer">{{ farmerName }}</span>
         <a routerLink="/alerts" class="topbar-alerts">
-          
+          Alertes
           <span class="alert-badge" *ngIf="unreadAlerts > 0">
             {{ unreadAlerts }}
           </span>

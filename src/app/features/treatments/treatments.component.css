@@ -1,0 +1,48 @@
+.page-container{max-width:900px;margin:0 auto;}
+.page-header-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;gap:12px;}
+.page-header-row h1{font-size:24px;font-weight:700;color:#1a1a1a;}
+.page-sub{font-size:14px;color:#6b7280;}
+.btn-add{padding:10px 18px;background:#1a5c2e;color:white;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;}
+.form-card{background:white;border-radius:14px;padding:20px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.form-card h3{font-size:15px;font-weight:700;margin-bottom:16px;}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:16px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group label{font-size:12px;font-weight:600;color:#374151;}
+.form-group input,.form-group select{padding:9px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:14px;outline:none;}
+.btn-submit{padding:11px 24px;background:#1a5c2e;color:white;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;}
+.tab-bar{display:flex;gap:4px;background:white;border-radius:12px;padding:6px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.tab-btn{display:flex;align-items:center;gap:6px;padding:8px 16px;border:none;border-radius:8px;background:none;cursor:pointer;font-size:13px;color:#6b7280;transition:all 0.2s;}
+.tab-btn.active{background:#1a5c2e;color:white;font-weight:600;}
+.tab-count{background:rgba(255,255,255,0.3);padding:1px 6px;border-radius:10px;font-size:11px;}
+.empty-state{display:flex;flex-direction:column;align-items:center;padding:40px;gap:8px;color:#6b7280;}
+.empty-state span{font-size:40px;}
+.dar-card{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-radius:12px;margin-bottom:10px;border-left:4px solid;}
+.dar-safe{background:#f0fdf4;border-color:#10b981;}
+.dar-warning{background:#fffbeb;border-color:#f59e0b;}
+.dar-waiting{background:#fff7ed;border-color:#ef4444;}
+.dar-info h3{font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:4px;}
+.dar-info p{font-size:12px;color:#6b7280;}
+.dar-countdown{text-align:center;}
+.dar-days{display:block;font-size:28px;font-weight:800;color:#1a1a1a;}
+.dar-unit{display:block;font-size:11px;color:#6b7280;margin-bottom:4px;}
+.dar-safe,.dar-wait{font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;}
+.dar-safe{background:#dcfce7;color:#059669;}
+.dar-wait{background:#fef3c7;color:#d97706;}
+.parcel-selector{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.parcel-tab{padding:8px 16px;border-radius:20px;border:1px solid #e5e7eb;background:white;cursor:pointer;font-size:13px;}
+.parcel-tab.active{background:#1a5c2e;color:white;}
+.log-list{display:flex;flex-direction:column;gap:8px;}
+.log-item{display:flex;align-items:center;gap:12px;background:white;border-radius:10px;padding:12px 16px;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.log-icon{font-size:24px;}
+.log-info{flex:1;display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+.log-info strong{font-size:14px;color:#1a1a1a;width:100%;}
+.log-info span{font-size:12px;color:#6b7280;}
+.log-dar{background:#eff6ff;color:#1d4ed8;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:600;}
+.pesticide-card{background:white;border-radius:12px;padding:16px 20px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.pest-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.pest-header h3{font-size:15px;font-weight:700;color:#1a1a1a;}
+.pest-homo{font-size:11px;background:#f0fdf4;color:#059669;padding:3px 10px;border-radius:20px;}
+.pest-details{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px;}
+.pest-details span{font-size:12px;color:#6b7280;}
+.pest-targets{display:flex;flex-wrap:wrap;gap:6px;}
+.target-tag{background:#fef3c7;color:#92400e;padding:3px 10px;border-radius:20px;font-size:11px;}

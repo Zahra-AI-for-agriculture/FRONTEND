@@ -1,0 +1,97 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1> Météo</h1>
+    <p class="page-sub">{{ city }} — Tunisie | طقس اليوم</p>
+  </div>
+
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spin"></div>
+    <p>Chargement météo...</p>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+
+    <!-- Météo actuelle -->
+    <div class="weather-hero" *ngIf="currentWeather">
+      <div class="weather-big">
+        <div class="weather-temp-big">
+          {{ currentWeather.temperature }}°C
+        </div>
+        <div class="weather-desc-big">
+          {{ currentWeather.description_fr }}
+          <span class="weather-desc-ar">
+            / {{ currentWeather.description_ar }}
+          </span>
+        </div>
+      </div>
+      <div class="weather-details-row">
+        <div class="wd-item">
+          <span class="wd-icon"></span>
+          <span class="wd-val">{{ currentWeather.humidity }}%</span>
+          <span class="wd-lbl">Humidité / رطوبة</span>
+        </div>
+        <div class="wd-item">
+          <span class="wd-icon"></span>
+          <span class="wd-val">{{ currentWeather.wind_speed_kmh }} km/h</span>
+          <span class="wd-lbl">Vent / رياح</span>
+        </div>
+        <div class="wd-item">
+          <span class="wd-icon"></span>
+          <span class="wd-val">{{ currentWeather.precipitation_mm || 0 }} mm</span>
+          <span class="wd-lbl">Pluie / أمطار</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Risque Sirocco -->
+    <div class="sirocco-card"
+         *ngIf="siroccoRisk"
+         [class.risk-high]="siroccoRisk.risk_level === 'élevé'"
+         [class.risk-low]="siroccoRisk.risk_level === 'faible'">
+      <div class="sirocco-header">
+        <span class="sirocco-icon"></span>
+        <div>
+          <h3>Risque Sirocco / خطر الشهيلي</h3>
+          <p>{{ siroccoRisk.message_fr }}</p>
+        </div>
+        <div class="sirocco-badge"
+             [class.badge-high]="siroccoRisk.risk_level === 'élevé'"
+             [class.badge-low]="siroccoRisk.risk_level === 'faible'">
+          {{ siroccoRisk.risk_level | titlecase }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Alertes météo -->
+    <div class="alerts-section" *ngIf="weatherAlerts.length > 0">
+      <h3> Alertes actives</h3>
+      <div class="alert-item"
+           *ngFor="let alert of weatherAlerts"
+           [class]="'alert-' + alert.severity">
+        <span class="alert-msg">{{ alert.message_fr }}</span>
+        <span class="alert-msg-ar">{{ alert.message_ar }}</span>
+      </div>
+    </div>
+
+    <!-- Prévisions 7 jours -->
+    <div class="forecast-section">
+      <h3> Prévisions 7 jours / توقعات 7 أيام</h3>
+      <div class="forecast-row">
+        <div class="forecast-day" *ngFor="let day of forecast">
+          <span class="fc-date">
+            {{ day.date | date:'EEE dd/MM' }}
+          </span>
+          <span class="fc-icon">
+            {{ getWeatherIcon(day.weather_code) }}
+          </span>
+          <span class="fc-max">{{ day.temp_max }}°</span>
+          <span class="fc-min">{{ day.temp_min }}°</span>
+          <span class="fc-rain" *ngIf="day.precipitation_mm > 0">
+             {{ day.precipitation_mm }}mm
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+</div>

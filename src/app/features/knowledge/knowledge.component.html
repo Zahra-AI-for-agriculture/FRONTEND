@@ -1,0 +1,129 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1> Connaissances / المعرفة</h1>
+    <p class="page-sub">Base de données agricole tunisienne</p>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn" [class.active]="activeTab==='crops'"
+            (click)="activeTab='crops'"> Cultures</button>
+    <button class="tab-btn" [class.active]="activeTab==='calendar'"
+            (click)="activeTab='calendar'"> Calendrier</button>
+    <button class="tab-btn" [class.active]="activeTab==='subsidies'"
+            (click)="activeTab='subsidies'"> Aides</button>
+    <button class="tab-btn" [class.active]="activeTab==='seeds'"
+            (click)="activeTab='seeds'"> Semences</button>
+  </div>
+
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spin"></div><p>Chargement...</p>
+  </div>
+
+  <div *ngIf="!isLoading && activeTab === 'crops'">
+    <div class="crops-grid">
+      <div class="crop-card" *ngFor="let c of crops">
+        <div class="crop-header">
+          <h3>{{ c.name }}</h3>
+          <span class="crop-name-ar">{{ c.name_ar }}</span>
+        </div>
+        <div class="crop-details">
+          <div class="cd-item">
+            <span> Saison</span>
+            <strong>{{ c.season }}</strong>
+          </div>
+          <div class="cd-item">
+            <span> Besoin eau</span>
+            <strong>{{ c.water_need_mm }} mm</strong>
+          </div>
+          <div class="cd-item">
+            <span> Température</span>
+            <strong>{{ c.optimal_temp }}</strong>
+          </div>
+          <div class="cd-item">
+            <span> Régions</span>
+            <strong>{{ c.regions?.join(', ') }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && activeTab === 'calendar'">
+    <div class="calendar-selector">
+      <div class="form-group">
+        <label>Culture / المحصول</label>
+        <select [(ngModel)]="selectedCrop" name="crop">
+          <option value="">-- Choisir --</option>
+          <option *ngFor="let c of crops" [value]="c.name">{{ c.name }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Région / المنطقة</label>
+        <select [(ngModel)]="selectedRegion" name="region">
+          <option value="">-- Choisir --</option>
+          <option value="Béja">Béja</option>
+          <option value="Sidi Bouzid">Sidi Bouzid</option>
+          <option value="Sfax">Sfax</option>
+          <option value="Nabeul">Nabeul</option>
+          <option value="Sousse">Sousse</option>
+          <option value="Kairouan">Kairouan</option>
+        </select>
+      </div>
+      <button class="btn-load-cal" (click)="loadCalendar()">
+         Charger le calendrier
+      </button>
+    </div>
+
+    <div class="calendar-result" *ngIf="calendar">
+      <h3>
+         {{ calendar.crop }} — {{ calendar.region }}
+      </h3>
+      <div class="calendar-stages">
+        <div class="stage-item"
+             *ngFor="let s of getCalendarEntries(); let i = index">
+          <div class="stage-number">{{ i + 1 }}</div>
+          <div class="stage-info">
+            <strong>{{ s.stage | titlecase }}</strong>
+            <span>{{ s.period }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && activeTab === 'subsidies'">
+    <div class="subsidy-card" *ngFor="let s of subsidies">
+      <div class="sub-header">
+        <h3>{{ s.name }}</h3>
+        <span class="sub-org">{{ s.organism }}</span>
+      </div>
+      <p class="sub-desc">{{ s.description }}</p>
+      <div class="sub-details">
+        <span class="sub-amount"> {{ s.amount }}</span>
+        <span class="sub-crops"> {{ s.crops }}</span>
+        <a [href]="'https://' + s.contact" target="_blank"
+           class="sub-link"> {{ s.contact }}</a>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && activeTab === 'seeds'">
+    <div class="seeds-table">
+      <div class="seed-row header-row">
+        <span>Variété</span>
+        <span>Culture</span>
+        <span>Cycle</span>
+        <span>Potentiel</span>
+        <span>Résistance</span>
+      </div>
+      <div class="seed-row" *ngFor="let s of seeds">
+        <strong>{{ s.name }}</strong>
+        <span>{{ s.crop }}</span>
+        <span>{{ s.cycle }}</span>
+        <span>{{ s.yield_potential }}</span>
+        <span class="resistance-tag">{{ s.resistance }}</span>
+      </div>
+    </div>
+  </div>
+
+</div>

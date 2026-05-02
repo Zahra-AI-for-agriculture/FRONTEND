@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { WeatherCurrent, WeatherForecast, WeatherAlert, SiroccoRisk, SeasonalSummary } from '../models';
+// Models not imported here to avoid build issues
 
 @Injectable({ providedIn: 'root' })
 export class WeatherService {
@@ -11,32 +11,32 @@ export class WeatherService {
 
   constructor(private http: HttpClient) {}
 
-  getCurrentWeather(city: string): Observable<WeatherCurrent> {
-    return this.http.get<WeatherCurrent>(`${this.API}/current/${city}`).pipe(
+  getCurrentWeather(city: string): Observable<any> {
+    return this.http.get<any>(`${this.API}/current/${city}`).pipe(
       catchError(err => throwError(() => err))
     );
   }
 
-  getForecast(city: string): Observable<WeatherForecast> {
-    return this.http.get<WeatherForecast>(`${this.API}/forecast/${city}`).pipe(
+  getForecast(city: string): Observable<any> {
+    return this.http.get<any>(`${this.API}/forecast/${city}`).pipe(
       catchError(err => throwError(() => err))
     );
   }
 
-  getAlerts(governorate: string): Observable<WeatherAlert[]> {
-    return this.http.get<WeatherAlert[]>(`${this.API}/alerts/${governorate}`).pipe(
+  getAlerts(governorate: string): Observable<any> {
+    return this.http.get<any>(`${this.API}/alerts/${governorate}`).pipe(
       catchError(err => throwError(() => err))
     );
   }
 
-  getSiroccoRisk(city: string): Observable<SiroccoRisk> {
-    return this.http.get<SiroccoRisk>(`${this.API}/sirocco-risk/${city}`).pipe(
+  getSiroccoRisk(city: string): Observable<any> {
+    return this.http.get<any>(`${this.API}/sirocco-risk/${city}`).pipe(
       catchError(err => throwError(() => err))
     );
   }
 
-  getSeasonalSummary(city: string): Observable<SeasonalSummary> {
-    return this.http.get<SeasonalSummary>(`${this.API}/seasonal-summary/${city}`).pipe(
+  getSeasonalSummary(city: string): Observable<any> {
+    return this.http.get<any>(`${this.API}/seasonal-summary/${city}`).pipe(
       catchError(err => throwError(() => err))
     );
   }

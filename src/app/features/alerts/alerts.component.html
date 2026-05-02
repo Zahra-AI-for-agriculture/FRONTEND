@@ -1,0 +1,74 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1> Alertes / التنبيهات</h1>
+    <p class="page-sub">
+      {{ alerts.length }} alertes — 
+      {{ unreadCount }} non lues
+    </p>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn" [class.active]="activeTab==='mine'"
+            (click)="activeTab='mine'">
+       Mes alertes
+      <span class="tab-count" *ngIf="alerts.length">{{ alerts.length }}</span>
+    </button>
+    <button class="tab-btn" [class.active]="activeTab==='community'"
+            (click)="activeTab='community'">
+       Communauté
+      <span class="tab-count" *ngIf="communityAlerts.length">
+        {{ communityAlerts.length }}
+      </span>
+    </button>
+  </div>
+
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spin"></div><p>Chargement...</p>
+  </div>
+
+  <div *ngIf="!isLoading && activeTab === 'mine'">
+    <div class="empty-state" *ngIf="alerts.length === 0">
+      <span></span>
+      <p>Aucune alerte active / لا تنبيهات</p>
+    </div>
+    <div class="alert-card"
+         *ngFor="let alert of alerts"
+         [class]="getSeverityClass(alert.severity)"
+         [class.read]="alert.is_read">
+      <div class="alert-card-left">
+        <span class="alert-type-icon">
+          {{ getAlertIcon(alert.type) }}
+        </span>
+        <div class="alert-content">
+          <p class="alert-msg-fr">{{ alert.message_fr }}</p>
+          <p class="alert-msg-ar">{{ alert.message_ar }}</p>
+          <span class="alert-date">
+            {{ alert.created_at | date:'dd/MM/yyyy HH:mm' }}
+          </span>
+        </div>
+      </div>
+      <button class="btn-read"
+              *ngIf="!alert.is_read"
+              (click)="markRead(alert)">
+        Lu
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && activeTab === 'community'">
+    <div class="empty-state" *ngIf="communityAlerts.length === 0">
+      <span></span>
+      <p>Aucune alerte dans votre région</p>
+    </div>
+    <div class="alert-card community-alert"
+         *ngFor="let alert of communityAlerts">
+      <span class="alert-type-icon">
+        {{ getAlertIcon(alert.type) }}
+      </span>
+      <div class="alert-content">
+        <p class="alert-msg-fr">{{ alert.message_fr }}</p>
+        <p class="alert-msg-ar">{{ alert.message_ar }}</p>
+      </div>
+    </div>
+  </div>
+</div>

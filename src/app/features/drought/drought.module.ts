@@ -3,19 +3,19 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
-import { AlertsComponent } from './alerts.component';
+import { DroughtComponent } from './drought.component';
 import { AppLayoutComponent } from '../../shared/layout/app-layout.component';
 
 @NgModule({
-  declarations: [AlertsComponent],
+  declarations: [DroughtComponent],
   imports: [
     CommonModule, 
     FormsModule, 
     SharedModule,
     RouterModule.forChild([{
       path: '', component: AppLayoutComponent,
-      children: [{ path: '', component: AlertsComponent }]
+      children: [{ path: '', component: DroughtComponent }]
     }])
   ]
 })
-export class AlertsModule {}
+export class DroughtModule {}

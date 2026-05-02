@@ -1,26 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
+import { TreatmentsComponent } from './treatments.component';
 import { AppLayoutComponent } from '../../shared/layout/app-layout.component';
-import { TreatmentsComponent } from './treatments/treatments.component';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: AppLayoutComponent,
-    children: [
-      { path: '', component: TreatmentsComponent }
-    ]
-  }
-];
 
 @NgModule({
   declarations: [TreatmentsComponent],
   imports: [
-    CommonModule,
+    CommonModule, 
+    FormsModule, 
     SharedModule,
-    RouterModule.forChild(routes),
+    RouterModule.forChild([{
+      path: '', component: AppLayoutComponent,
+      children: [{ path: '', component: TreatmentsComponent }]
+    }])
   ]
 })
 export class TreatmentsModule {}
