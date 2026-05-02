@@ -15,7 +15,7 @@ L.Icon.Default.mergeOptions({
 
 interface ParcelDraft {
   name: string; lat: number; lng: number;
-  area_ha: number; polygon_geojson: string; crop: string;
+  area_ha: number; polygon_geojson: string; crop: string; soil_type: string;
 }
 
 @Component({
@@ -62,6 +62,7 @@ export class RegisterComponent implements OnDestroy, AfterViewChecked {
     parcel_name:         '',
     parcel_area_ha:      null as number | null,
     polygon_geojson:     '',
+    soil_type:           '',
   };
 
   readonly zones = [
@@ -108,6 +109,25 @@ export class RegisterComponent implements OnDestroy, AfterViewChecked {
     { value: 'Orge',     emoji: '' },
     { value: 'Grenade',  emoji: '' },
     { value: 'Fève',     emoji: '' },
+  ];
+  
+  private readonly ZONE_SOIL_MAP: Record<string, string> = {
+    'nord_humide':      'Argilo-limoneux',
+    'nord_semi_aride':  'Argilo-calcaire',
+    'cap_bon':          'Limoneux',
+    'centre_est':       'Calcaire',
+    'centre_ouest':     'Argilo-calcaire',
+    'sud_est':          'Sableux',
+    'sud_ouest':        'Sableux',
+    'tunisie_centrale': 'Argilo-calcaire',
+  };
+
+  readonly soilTypes = [
+    'Argilo-limoneux',
+    'Argilo-calcaire',
+    'Limoneux',
+    'Calcaire',
+    'Sableux',
   ];
 
   private selectedZone: any = null;
@@ -162,6 +182,7 @@ export class RegisterComponent implements OnDestroy, AfterViewChecked {
     this.selectedZone         = zone;
     this.formData.region_zone = zone.zone;
     this.formData.governorate = zone.gouvernorat;
+    this.formData.soil_type   = this.ZONE_SOIL_MAP[zone.zone] || 'Argilo-calcaire';
     if (!this.formData.main_crop && zone.cultures.length > 0) {
       this.formData.main_crop = zone.cultures[0];
     }
@@ -553,6 +574,7 @@ export class RegisterComponent implements OnDestroy, AfterViewChecked {
       area_ha:         this.formData.parcel_area_ha || 0,
       polygon_geojson: this.formData.polygon_geojson,
       crop:            this.formData.main_crop,
+      soil_type:       this.formData.soil_type,
     };
     this.parcels.push(draft);
     this.parcelSaved          = true;
@@ -636,6 +658,7 @@ export class RegisterComponent implements OnDestroy, AfterViewChecked {
       name:            p.name,
       crop:            p.crop,
       region:          this.formData.governorate,
+      soil_type:       p.soil_type,
       area_ha:         p.area_ha,
       polygon_geojson: p.polygon_geojson,
     };

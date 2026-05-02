@@ -157,6 +157,23 @@
         </div>
       </div>
 
+      <div class="soil-section" *ngIf="formData.region_zone">
+        <h3>🌍 Type de sol / نوع التربة</h3>
+        <p class="soil-auto">
+          ✅ Détecté automatiquement pour {{ formData.region_zone | titlecase }}
+          — vous pouvez modifier si nécessaire.
+        </p>
+        <div class="soil-options">
+          <button type="button"
+                  class="soil-btn"
+                  *ngFor="let soil of soilTypes"
+                  [class.selected]="formData.soil_type === soil"
+                  (click)="formData.soil_type = soil">
+            {{ soil }}
+          </button>
+        </div>
+      </div>
+
       <div class="error-msg" *ngIf="errorMessage">️ {{ errorMessage }}</div>
 
       <div class="step-actions">
