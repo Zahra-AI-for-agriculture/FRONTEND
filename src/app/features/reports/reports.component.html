@@ -1,0 +1,117 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1> Rapports / التقارير</h1>
+    <p class="page-sub">Bilan de votre exploitation agricole</p>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn" [class.active]="activeTab==='overview'"
+            (click)="activeTab='overview'"> Vue globale</button>
+    <button class="tab-btn" [class.active]="activeTab==='financial'"
+            (click)="activeTab='financial'"> Finances</button>
+    <button class="tab-btn" [class.active]="activeTab==='sustainability'"
+            (click)="activeTab='sustainability'"> Durabilité</button>
+  </div>
+
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spin"></div><p>Chargement...</p>
+  </div>
+
+  <div *ngIf="!isLoading && activeTab === 'overview' && dashboard">
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-icon"></div>
+        <div class="kpi-val">{{ dashboard.summary?.total_parcels }}</div>
+        <div class="kpi-lbl">Parcelles</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon"></div>
+        <div class="kpi-val">{{ dashboard.summary?.total_area_ha }} ha</div>
+        <div class="kpi-lbl">Surface totale</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon"></div>
+        <div class="kpi-val">{{ dashboard.summary?.active_crops?.length }}</div>
+        <div class="kpi-lbl">Cultures actives</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon"></div>
+        <div class="kpi-val">{{ dashboard.summary?.unread_alerts }}</div>
+        <div class="kpi-lbl">Alertes non lues</div>
+      </div>
+    </div>
+
+    <div class="parcels-report">
+      <h3> Mes parcelles</h3>
+      <div class="parcel-report-row"
+           *ngFor="let p of dashboard.parcels || []">
+        <strong>{{ p.name }}</strong>
+        <span>{{ p.crop }}</span>
+        <span>{{ p.area_ha }} ha</span>
+        <span *ngIf="p.health_score"> {{ p.health_score }}/100</span>
+        <span *ngIf="p.ndvi"> NDVI: {{ p.ndvi }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && activeTab === 'financial' && financial">
+    <div class="finance-hero">
+      <div class="finance-item profit">
+        <span class="fi-icon"></span>
+        <div>
+          <span class="fi-label">Bénéfice estimé / الربح المتوقع</span>
+          <span class="fi-val">{{ financial.estimated_profit_dt | number }} DT</span>
+        </div>
+      </div>
+    </div>
+    <div class="finance-grid">
+      <div class="finance-card revenue">
+        <h4> Revenus estimés</h4>
+        <div class="fin-amount">{{ financial.estimated_revenue_dt | number }} DT</div>
+      </div>
+      <div class="finance-card costs">
+        <h4> Coûts estimés</h4>
+        <div class="fin-amount">{{ financial.estimated_costs_dt | number }} DT</div>
+      </div>
+    </div>
+    <div class="finance-bar">
+      <div class="fb-label">Marge bénéficiaire</div>
+      <div class="fb-track">
+        <div class="fb-fill"
+             [style.width.%]="(financial.estimated_profit_dt / financial.estimated_revenue_dt) * 100">
+        </div>
+      </div>
+      <div class="fb-pct">
+        {{ ((financial.estimated_profit_dt / financial.estimated_revenue_dt) * 100) | number:'1.0-0' }}%
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && activeTab === 'sustainability' && sustainability">
+    <div class="sustain-score">
+      <div class="ss-circle">
+        <span class="ss-val">{{ sustainability.global_score }}</span>
+        <span class="ss-lbl">/100</span>
+      </div>
+      <h3>Score de durabilité / درجة الاستدامة</h3>
+    </div>
+    <div class="indicators-grid">
+      <div class="indicator-card"
+           *ngFor="let ind of getIndicators()">
+        <div class="ind-name">{{ ind.name }}</div>
+        <div class="ind-bar">
+          <div class="ind-fill" [style.width.%]="ind.value"></div>
+        </div>
+        <div class="ind-val">{{ ind.value }}/100</div>
+      </div>
+    </div>
+    <div class="recommendations">
+      <h4> Recommandations</h4>
+      <div class="rec-item"
+           *ngFor="let r of sustainability.recommendations_fr || []">
+         {{ r }}
+      </div>
+    </div>
+  </div>
+
+</div>

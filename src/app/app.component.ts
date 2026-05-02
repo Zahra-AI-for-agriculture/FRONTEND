@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
-import { LanguageService } from './services/language.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  template: '<router-outlet></router-outlet>',
+  styles: []
 })
-export class AppComponent {
-  constructor(public lang: LanguageService) {}
-}
+export class AppComponent {}

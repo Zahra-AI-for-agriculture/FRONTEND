@@ -1,0 +1,75 @@
+<div class="layout-wrapper" [class.sidebar-collapsed]="!sidebarOpen">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+
+    <!-- Brand -->
+    <div class="sidebar-brand">
+      <span class="brand-icon"></span>
+      <span class="brand-name" *ngIf="sidebarOpen">Zahra</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+      <ng-container *ngFor="let group of navGroups">
+        <div class="nav-group-label" *ngIf="sidebarOpen && getGroupLabel(group)">
+          {{ getGroupLabel(group) }}
+        </div>
+        <a class="nav-item"
+           *ngFor="let item of group.items"
+           [routerLink]="item.path"
+           [class.active]="isActive(item.path)">
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span class="nav-label" *ngIf="sidebarOpen">{{ getLabel(item) }}</span>
+          <span class="nav-badge"
+                *ngIf="item.badge && unreadAlerts > 0">
+            {{ unreadAlerts }}
+          </span>
+        </a>
+      </ng-container>
+    </nav>
+
+    <!-- Footer sidebar -->
+    <div class="sidebar-footer">
+      <div class="farmer-info" *ngIf="sidebarOpen">
+        <div class="farmer-avatar">
+          {{ farmerName.charAt(0).toUpperCase() }}
+        </div>
+        <span class="farmer-name">{{ farmerName }}</span>
+      </div>
+      <button class="btn-logout" (click)="logout()" title="Déconnexion">
+        
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- Main content -->
+  <div class="main-content">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <button class="btn-toggle" (click)="toggleSidebar()">
+        {{ sidebarOpen ? '' : '' }}
+      </button>
+      <div class="topbar-right">
+        <button class="btn-lang" (click)="toggleLang()">
+          {{ lang === 'fr' ? 'AR' : 'FR' }}
+        </button>
+        <span class="topbar-farmer">{{ farmerName }}</span>
+        <a routerLink="/alerts" class="topbar-alerts">
+          Alertes
+          <span class="alert-badge" *ngIf="unreadAlerts > 0">
+            {{ unreadAlerts }}
+          </span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Page content -->
+    <main class="page-content">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+</div>

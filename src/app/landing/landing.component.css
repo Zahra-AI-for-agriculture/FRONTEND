@@ -1,0 +1,4 @@
+/* Landing page — no additional styles needed, all styles come from child components */
+:host {
+  display: block;
+}

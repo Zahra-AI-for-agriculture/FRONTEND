@@ -1,0 +1,98 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1> Irrigation / الري</h1>
+    <p class="page-sub">Plan d'irrigation optimisé par l'IA (M5)</p>
+  </div>
+
+  <div class="parcel-selector" *ngIf="parcels.length > 0">
+    <button class="parcel-tab"
+            *ngFor="let p of parcels"
+            [class.active]="selectedParcelId === p.id"
+            (click)="selectParcel(p.id)">
+       {{ p.name }}
+    </button>
+  </div>
+
+  <div class="plan-card" *ngIf="weeklyPlan && !isLoading">
+    <div class="plan-header">
+      <h3> Plan de la semaine — {{ weeklyPlan.parcel_name }}</h3>
+      <div class="plan-total">
+         {{ weeklyPlan.total_water_mm }} mm total
+      </div>
+    </div>
+    <div class="days-grid">
+      <div class="day-item"
+           *ngFor="let day of weeklyPlan.days || []"
+           [class.irrigate]="day.irrigate"
+           [class.no-irrigate]="!day.irrigate">
+        <span class="day-name">{{ day.day }}</span>
+        <span class="day-icon">{{ day.irrigate ? '' : '—' }}</span>
+        <span class="day-amount" *ngIf="day.irrigate">
+          {{ day.water_mm }} mm
+        </span>
+        <span class="day-method" *ngIf="day.irrigate">
+          {{ day.method }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="calc-card">
+    <h3> Calcul personnalisé / حساب مخصص</h3>
+    <div class="calc-grid">
+      <div class="form-group">
+        <label>Culture / المحصول</label>
+        <select [(ngModel)]="form.crop" name="crop">
+          <option value="Olivier"> Olivier</option>
+          <option value="Tomate"> Tomate</option>
+          <option value="Blé dur"> Blé dur</option>
+          <option value="Piment"> Piment</option>
+          <option value="Agrumes"> Agrumes</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Stade / الطور</label>
+        <select [(ngModel)]="form.growth_stage" name="stage">
+          <option *ngFor="let s of growthStages" [value]="s">{{ s }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Température °C / درجة الحرارة</label>
+        <input type="number" [(ngModel)]="form.temperature" name="temp"/>
+      </div>
+      <div class="form-group">
+        <label>Humidité % / رطوبة</label>
+        <input type="number" [(ngModel)]="form.humidity" name="hum"/>
+      </div>
+      <div class="form-group">
+        <label>Pluie 7j mm / أمطار</label>
+        <input type="number" [(ngModel)]="form.rainfall_last_7d" name="rain"/>
+      </div>
+    </div>
+    <button class="btn-calc" (click)="calculate()" [disabled]="calcLoading">
+      {{ calcLoading ? ' Calcul...' : ' Calculer' }}
+    </button>
+
+    <div class="irrig-result" *ngIf="irrigResult">
+      <div class="result-highlight">
+        <span class="result-icon"></span>
+        <div>
+          <h3>{{ irrigResult.water_amount_mm }} mm</h3>
+          <p>dose recommandée / الجرعة الموصى بها</p>
+        </div>
+      </div>
+      <div class="result-details">
+        <div class="rd-item">
+          <span> Méthode</span>
+          <strong>{{ irrigResult.method }}</strong>
+        </div>
+        <div class="rd-item">
+          <span> Urgence</span>
+          <strong>{{ irrigResult.urgency }}</strong>
+        </div>
+      </div>
+      <p class="result-msg">{{ irrigResult.message_fr }}</p>
+      <p class="result-msg-ar">{{ irrigResult.message_ar }}</p>
+    </div>
+  </div>
+</div>

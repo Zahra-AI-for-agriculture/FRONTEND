@@ -1,0 +1,161 @@
+<div class="parcels-page">
+  <div class="page-header">
+    <div>
+      <h1>Mes Parcelles</h1>
+      <p class="page-sub">Gérez et diagnostiquez vos champs</p>
+    </div>
+    <button class="btn-primary" (click)="openAddModal()">+ Ajouter une parcelle</button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="loading-spinner"></div>
+    <p>Chargement de vos parcelles...</p>
+  </div>
+
+  <!-- Error -->
+  <div class="error-state" *ngIf="error">️ {{ error }}</div>
+
+  <!-- Empty -->
+  <div class="empty-state" *ngIf="!isLoading && parcels.length === 0">
+    <div class="empty-icon">️</div>
+    <h3>Aucune parcelle enregistrée</h3>
+    <p>Créez votre compte pour ajouter vos parcelles</p>
+  </div>
+
+  <!-- Grille parcelles -->
+  <div class="parcels-grid" *ngIf="!isLoading && parcels.length > 0">
+    <div class="parcel-card"
+         *ngFor="let parcel of parcels"
+         (click)="goToParcel(parcel.id)">
+
+      <!-- Header carte -->
+      <div class="parcel-card-header"
+           [style.borderColor]="getHealthColor(parcel.health_score)">
+        <div class="parcel-crop-icon">
+          {{ getCropEmoji(parcel.crop) }}
+        </div>
+        <div class="parcel-card-info">
+          <h3>{{ parcel.name }}</h3>
+          <span class="parcel-crop">{{ parcel.crop || 'Culture non définie' }}</span>
+        </div>
+        <div class="parcel-health-badge"
+             [style.background]="getHealthColor(parcel.health_score) + '20'"
+             [style.color]="getHealthColor(parcel.health_score)"
+             [style.borderColor]="getHealthColor(parcel.health_score)">
+          {{ getHealthLabel(parcel.health_score) }}
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="parcel-stats">
+        <div class="stat-item">
+          <span class="stat-icon"></span>
+          <span class="stat-value">{{ parcel.area_ha || '—' }} ha</span>
+          <span class="stat-label">Superficie</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-icon">️</span>
+          <span class="stat-value">{{ parcel.ndvi_current || '—' }}</span>
+          <span class="stat-label">NDVI</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-icon"></span>
+          <span class="stat-value">{{ parcel.region || '—' }}</span>
+          <span class="stat-label">Région</span>
+        </div>
+      </div>
+
+      <!-- CTA Diagnostic -->
+      <div class="parcel-card-footer">
+        <span class="diagnose-hint"> Appuyez pour diagnostiquer</span>
+        <span class="parcel-arrow">›</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ADD PARCEL MODAL -->
+  <div class="modal-overlay" *ngIf="showAddModal">
+    <div class="modal-content add-modal-content">
+      <div class="modal-header">
+        <h2>Ajouter une parcelle</h2>
+        <button class="close-btn" (click)="closeAddModal()">×</button>
+      </div>
+      
+      <div class="modal-body add-modal-body">
+        <div class="split-layout">
+          
+          <!-- LEFT: Form -->
+          <div class="form-section">
+            <div class="form-group">
+              <label>Nom de la parcelle</label>
+              <input type="text" [(ngModel)]="newParcelData.name" placeholder="Ex: Champ Nord">
+            </div>
+
+            <div class="form-group">
+              <label>Zone Agricole</label>
+              <div class="zones-grid-mini">
+                <div class="zone-card-mini" 
+                     *ngFor="let z of zones" 
+                     [class.selected]="selectedZone?.zone === z.zone"
+                     (click)="selectZone(z)">
+                  <div class="zone-name">{{ z.label }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Culture principale</label>
+              <div class="crops-grid-mini" *ngIf="selectedZone">
+                <div class="crop-badge" 
+                     *ngFor="let c of cultures"
+                     [class.selected]="newParcelData.main_crop === c.value"
+                     (click)="selectCulture(c.value)">
+                  {{ c.label }}
+                </div>
+              </div>
+              <p *ngIf="!selectedZone" style="font-size: 13px; color: #8a8a82;">Sélectionnez d'abord une zone</p>
+            </div>
+
+            <div class="status-panel">
+              <div *ngIf="!newParcelData.parcel_lat && !segmentationLoading" class="hint">
+                Cliquez sur la carte pour localiser la parcelle.
+              </div>
+              <div *ngIf="segmentationLoading" class="hint loading">
+                <span class="spinner"></span> Analyse satellite M4 en cours...
+              </div>
+              <div *ngIf="segmentationDone && !segmentationError" class="hint success">
+                Superficie détectée : <strong>{{ newParcelData.parcel_area_ha }} ha</strong>
+              </div>
+              <div *ngIf="segmentationError" class="hint error">
+                {{ segmentationError }}
+              </div>
+            </div>
+
+            <div class="editing-controls" *ngIf="segmentationDone && parcelLayer">
+              <button class="btn-secondary btn-sm" *ngIf="!isEditing" (click)="enableEditing()">Ajuster les contours</button>
+              <button class="btn-primary btn-sm" *ngIf="isEditing" (click)="confirmEditing()">Valider contours</button>
+              <button class="btn-secondary btn-sm" *ngIf="isEditing" (click)="cancelEditing()">Annuler</button>
+            </div>
+          </div>
+
+          <!-- RIGHT: Map -->
+          <div class="map-section">
+            <div id="add-parcel-map" style="height: 100%; width: 100%; border-radius: 8px;"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeAddModal()">Annuler</button>
+        <button class="btn-primary" 
+                [disabled]="!isFormValid || isCreating" 
+                (click)="submitNewParcel()">
+          <span *ngIf="isCreating" class="spinner"></span>
+          {{ isCreating ? 'Création...' : 'Créer la parcelle' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+.page-container { max-width: 700px; margin: 0 auto; }
+.page-header { margin-bottom: 24px; }
+.page-header h1 { font-size: 24px; font-weight: 700; color: #1a1a1a; }
+.page-sub { font-size: 14px; color: #6b7280; }
+.loading-state { display:flex;flex-direction:column;align-items:center;min-height:300px;justify-content:center;gap:12px;color:#6b7280; }
+.spin { font-size:48px;animation:spin 2s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+.drought-hero {
+  border-radius: 20px; padding: 28px;
+  margin-bottom: 20px; border: 1px solid #e5e7eb;
+}
+.drought-main { display: flex; align-items: center; gap: 24px; }
+.spi-circle {
+  width: 110px; height: 110px; border-radius: 50%;
+  border: 4px solid; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: white; flex-shrink: 0;
+}
+.spi-value { font-size: 28px; font-weight: 800; }
+.spi-label { font-size: 11px; color: #6b7280; }
+.drought-info { flex: 1; }
+.drought-info h2 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.drought-info p  { font-size: 14px; color: #374151; margin-bottom: 4px; }
+.msg-ar { font-size: 13px; color: #6b7280; }
+.probability-bar {
+  height: 6px; background: #e5e7eb;
+  border-radius: 3px; margin: 10px 0 4px; overflow: hidden;
+}
+.prob-fill { height: 100%; border-radius: 3px; transition: width 0.8s; }
+.prob-text { font-size: 12px; color: #6b7280; }
+
+.spi-scale-card, .advice-card {
+  background: white; border-radius: 14px;
+  padding: 20px; margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.spi-scale-card h3, .advice-card h3 {
+  font-size: 15px; font-weight: 700;
+  color: #1a1a1a; margin-bottom: 14px;
+}
+.spi-scale { display: flex; flex-direction: column; gap: 8px; }
+.scale-item {
+  padding: 10px 14px; border-radius: 8px;
+  font-size: 13px; font-weight: 500;
+}
+.advice-content p { font-size: 14px; color: #374151; line-height: 1.6; }

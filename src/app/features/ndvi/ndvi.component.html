@@ -1,0 +1,88 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1> NDVI & Anomalies</h1>
+    <p class="page-sub">Surveillance végétale par satellite</p>
+  </div>
+
+  <div class="parcel-selector" *ngIf="parcels.length > 0">
+    <button class="parcel-tab"
+            *ngFor="let p of parcels"
+            [class.active]="selectedParcel?.id === p.id"
+            (click)="selectParcel(p)">
+       {{ p.name }}
+    </button>
+  </div>
+
+  <ng-container *ngIf="!isLoading && ndviData">
+
+    <div class="anomaly-banner"
+         *ngIf="anomaly?.is_anomaly">
+      <span class="anomaly-icon"></span>
+      <div>
+        <h3>Anomalie NDVI détectée / شذوذ NDVI</h3>
+        <p>{{ anomaly.message_fr }}</p>
+        <p class="msg-ar">{{ anomaly.message_ar }}</p>
+      </div>
+      <div class="anomaly-score">
+        Score : {{ anomaly.anomaly_score }}
+      </div>
+    </div>
+
+    <div class="ndvi-hero">
+      <div class="ndvi-gauge-wrapper">
+        <div class="ndvi-gauge"
+             [style.background]="getNdviColor(ndviData.ndvi) + '20'"
+             [style.borderColor]="getNdviColor(ndviData.ndvi)">
+          <span class="ndvi-val"
+                [style.color]="getNdviColor(ndviData.ndvi)">
+            {{ ndviData.ndvi | number:'1.2-2' }}
+          </span>
+          <span class="ndvi-lbl">NDVI</span>
+        </div>
+      </div>
+      <div class="ndvi-info">
+        <h2>{{ ndviData.classification_fr }}</h2>
+        <p class="ndvi-ar">{{ ndviData.classification_ar }}</p>
+        <div class="compare-row" *ngIf="ndviCompare">
+          <span class="cmp-item">
+             {{ ndviCompare.current_year?.year }} :
+            <strong>{{ ndviCompare.current_year?.ndvi }}</strong>
+          </span>
+          <span class="cmp-arrow"
+                [class.up]="ndviCompare.trend === 'amélioration'"
+                [class.down]="ndviCompare.trend === 'dégradation'">
+            {{ ndviCompare.trend === 'amélioration' ? '' : '' }}
+          </span>
+          <span class="cmp-item">
+             {{ ndviCompare.previous_year?.year }} :
+            <strong>{{ ndviCompare.previous_year?.ndvi }}</strong>
+          </span>
+        </div>
+        <div class="trend-badge"
+             *ngIf="ndviCompare"
+             [class.trend-up]="ndviCompare.trend === 'amélioration'"
+             [class.trend-down]="ndviCompare.trend === 'dégradation'">
+          {{ ndviCompare.trend }} {{ ndviCompare.difference > 0 ? '+' : '' }}{{ ndviCompare.difference }}
+        </div>
+      </div>
+    </div>
+
+    <div class="history-card" *ngIf="ndviHistory.length > 0">
+      <h3> Historique NDVI / تاريخ NDVI</h3>
+      <div class="history-bars">
+        <div class="hist-bar-item"
+             *ngFor="let h of ndviHistory">
+          <div class="hist-bar-wrap">
+            <div class="hist-bar"
+                 [style.height.%]="h.ndvi * 100"
+                 [style.background]="getNdviColor(h.ndvi)">
+            </div>
+          </div>
+          <span class="hist-week">{{ h.week }}</span>
+          <span class="hist-val">{{ h.ndvi }}</span>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+</div>

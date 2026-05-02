@@ -1,0 +1,314 @@
+<div class="detail-page" *ngIf="!isLoading">
+
+  <!-- Toast sauvegarde -->
+  <div class="saved-toast" [class.visible]="savedToast">
+     Diagnostic sauvegardé dans l'historique
+  </div>
+
+  <!-- Header -->
+  <div class="detail-header">
+    <button class="btn-back" (click)="goBack()">← Retour</button>
+    <div class="detail-title">
+      <span class="parcel-emoji">{{ getCropEmoji(parcel?.crop) }}</span>
+      <div>
+        <h1>{{ parcel?.name }}</h1>
+        <p>{{ parcel?.crop }} — {{ parcel?.area_ha }} ha — {{ parcel?.region }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Erreur chargement -->
+  <div class="error-banner" *ngIf="error && diagState !== 'error'">
+    ️ {{ error }}
+  </div>
+
+  <div class="detail-layout">
+
+    <!-- ══ COLONNE GAUCHE — Infos parcelle ══ -->
+    <div class="left-col">
+
+      <!-- Score de santé -->
+      <div class="info-card">
+        <h3>️ Santé de la parcelle</h3>
+        <div class="health-ring-wrapper">
+          <div class="health-ring">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="40"
+                      fill="none" stroke="#e5e7eb" stroke-width="8"/>
+              <circle cx="50" cy="50" r="40"
+                      fill="none"
+                      [attr.stroke]="parcel?.health_score >= 70 ? '#10b981' :
+                                     parcel?.health_score >= 40 ? '#f59e0b' : '#ef4444'"
+                      stroke-width="8"
+                      stroke-linecap="round"
+                      [attr.stroke-dasharray]="(parcel?.health_score || 0) * 2.51 + ' 251'"
+                      stroke-dashoffset="63"
+                      transform="rotate(-90 50 50)"/>
+            </svg>
+            <div class="health-score-text">
+              <span class="score-num">{{ parcel?.health_score || '—' }}</span>
+              <span class="score-unit">/100</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Infos clés -->
+      <div class="info-card">
+        <h3> Informations</h3>
+        <div class="info-list">
+          <div class="info-row">
+            <span class="info-key"> Culture</span>
+            <span class="info-val">{{ parcel?.crop || '—' }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-key"> Superficie</span>
+            <span class="info-val">{{ parcel?.area_ha || '—' }} ha</span>
+          </div>
+          <div class="info-row">
+            <span class="info-key">️ Région</span>
+            <span class="info-val">{{ parcel?.region || '—' }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-key">️ NDVI actuel</span>
+            <span class="info-val">{{ parcel?.ndvi_current || 'Non calculé' }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-key"> Sol</span>
+            <span class="info-val">{{ parcel?.soil_type || '—' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Historique -->
+      <div class="info-card" *ngIf="parcel?.history?.length > 0">
+        <h3> Historique</h3>
+        <div class="history-list">
+          <div class="history-item" *ngFor="let h of parcel.history">
+            <span class="hist-season">{{ h.season }}</span>
+            <span class="hist-crop">{{ h.crop }}</span>
+            <span class="hist-yield" *ngIf="h.yield_t_ha">{{ h.yield_t_ha }} T/ha</span>
+            <p class="hist-notes" *ngIf="h.notes">{{ h.notes }}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══ COLONNE DROITE — Zone Diagnostic ══ -->
+    <div class="right-col">
+
+      <!-- ── IDLE ── -->
+      <div class="diag-zone" *ngIf="diagState === 'idle'">
+        <div class="diag-invite">
+          <div class="diag-invite-icon"></div>
+          <h2>Diagnostic IA</h2>
+          <p>
+            Vous observez quelque chose d'anormal sur votre
+            <strong>{{ parcel?.crop }}</strong> ?
+            Prenez une photo de la plante et laissez
+            l'IA analyser en quelques secondes.
+          </p>
+          <div class="diag-invite-features">
+            <span> Photo de feuille ou fruit</span>
+            <span> Modèle M1 (EfficientNet-B0)</span>
+            <span> Résultat en 3 secondes</span>
+          </div>
+
+          <div class="upload-zone" (click)="triggerFileInput()">
+            <input #fileInput type="file" accept="image/*"
+                   style="display:none"
+                   (change)="onPhotoSelected($event)"/>
+            <div class="upload-icon"></div>
+            <p class="upload-label">Prendre ou choisir une photo</p>
+            <p class="upload-hint">JPG, PNG — depuis votre appareil photo</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── UPLOADING ── -->
+      <div class="diag-zone" *ngIf="diagState === 'uploading'">
+        <div class="photo-preview-wrapper">
+          <img [src]="photoPreview" class="photo-preview" alt="Photo"/>
+          <div class="preview-overlay">
+            <span> Préparation de l'analyse...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ANALYZING / CASCADING ── -->
+      <div class="diag-zone analyzing-state"
+           *ngIf="diagState === 'analyzing' || diagState === 'cascading'">
+        <div class="split-view">
+          <div class="photo-side">
+            <img [src]="photoPreview" class="photo-analyzing" alt="Photo"/>
+            <div class="scan-line"></div>
+          </div>
+          <div class="analyze-side">
+            <div class="ai-brain"></div>
+            <p class="analyze-message">{{ currentMessage }}</p>
+            <div class="analyze-dots">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── DONE ── -->
+      <div class="results-zone" *ngIf="diagState === 'done' && diagResult">
+
+        <!-- Photo mini + retry -->
+        <div class="result-photo-mini">
+          <img [src]="photoPreview" alt="Photo analysée"/>
+          <button class="btn-retry" (click)="resetDiagnosis()">
+             Nouvelle analyse
+          </button>
+        </div>
+
+        <!-- M1 — Diagnostic -->
+        <div class="result-card m1-card"
+             [class.healthy]="diagResult.is_healthy"
+             [class.diseased]="!diagResult.is_healthy">
+
+          <div class="result-card-header">
+            <div class="model-tag">M1 — Diagnostic</div>
+            <div class="confidence-badge"
+                 [style.background]="getConfidenceColor(diagResult.confidence) + '20'"
+                 [style.color]="getConfidenceColor(diagResult.confidence)">
+              {{ diagResult.confidence }}% confiance
+            </div>
+          </div>
+
+          <div class="diagnosis-main">
+            <div class="diagnosis-icon">
+              {{ diagResult.is_healthy ? '' : '️' }}
+            </div>
+            <div class="diagnosis-text">
+              <h2>{{ diagResult.disease }}</h2>
+              <p *ngIf="!diagResult.is_healthy" class="diagnosis-sub">
+                Maladie détectée — intervention recommandée
+              </p>
+              <p *ngIf="diagResult.is_healthy" class="diagnosis-sub healthy">
+                Votre {{ parcel?.crop }} est en bonne santé 
+              </p>
+            </div>
+          </div>
+
+          <div class="confidence-bar-wrapper">
+            <div class="confidence-bar">
+              <div class="confidence-fill"
+                   [style.width.%]="diagResult.confidence"
+                   [style.background]="getConfidenceColor(diagResult.confidence)">
+              </div>
+            </div>
+          </div>
+
+          <div class="treatment-box" *ngIf="!diagResult.is_healthy && (diagResult.treatment || diagResult.recommendations_fr)">
+            <h4> Traitement recommandé</h4>
+            <p>{{ diagResult.treatment || diagResult.recommendations_fr }}</p>
+          </div>
+
+          <button class="btn-save-history" (click)="saveDiagnosisToHistory()">
+             Sauvegarder dans l'historique
+          </button>
+
+        </div>
+
+        <!-- M2 — Impact rendement -->
+        <div class="result-card m2-card cascade-card"
+             [class.visible]="showM2"
+             *ngIf="!diagResult.is_healthy && yieldResult">
+
+          <div class="result-card-header">
+            <div class="model-tag m2-tag">M2 — Impact Rendement</div>
+            <div class="cascade-arrow">↓ Déclenché automatiquement</div>
+          </div>
+
+          <div class="impact-grid">
+            <div class="impact-item bad">
+              <span class="impact-label"> Sans traitement</span>
+              <span class="impact-value">
+                {{ yieldResult.with_disease?.yield_per_hectare || yieldResult.with_disease?.predicted_yield_kg || '—' }}
+              </span>
+              <span class="impact-sub">-{{ yieldResult.loss_pct }}% de rendement</span>
+            </div>
+            <div class="impact-arrow">→</div>
+            <div class="impact-item good">
+              <span class="impact-label"> Avec traitement</span>
+              <span class="impact-value">
+                {{ yieldResult.without_disease?.yield_per_hectare || yieldResult.without_disease?.predicted_yield_kg || '—' }}
+              </span>
+              <span class="impact-sub">Rendement optimal</span>
+            </div>
+          </div>
+
+          <div class="financial-impact">
+            <span class="fi-icon"></span>
+            <span class="fi-text">
+              Traiter maintenant vous évite de perdre
+              <strong>{{ yieldResult.loss_tnd | number }} TND</strong>
+            </span>
+          </div>
+
+        </div>
+
+        <!-- M5 — Irrigation -->
+        <div class="result-card m5-card cascade-card"
+             [class.visible]="showM5"
+             *ngIf="!diagResult.is_healthy && irrigResult">
+
+          <div class="result-card-header">
+            <div class="model-tag m5-tag">M5 — Irrigation Ajustée</div>
+            <div class="cascade-arrow">↓ Ajustement automatique</div>
+          </div>
+
+          <div class="irrigation-advice">
+            <div class="irrig-main">
+              <span class="irrig-icon"></span>
+              <div>
+                <h3>{{ irrigResult.recommended_amount_mm || irrigResult.water_amount_mm || '—' }} mm</h3>
+                <p>dose recommandée cette semaine</p>
+              </div>
+            </div>
+
+            <div class="irrig-details">
+              <div class="irrig-detail" *ngIf="irrigResult.urgency">
+                <span>️ Urgence</span>
+                <strong>{{ irrigResult.urgency }}</strong>
+              </div>
+              <div class="irrig-detail">
+                <span> Meilleur moment</span>
+                <strong>Tôt le matin</strong>
+              </div>
+              <div class="irrig-detail">
+                <span> Irrigation nécessaire</span>
+                <strong>{{ irrigResult.needs_irrigation ? 'Oui' : 'Non' }}</strong>
+              </div>
+            </div>
+
+            <div class="irrig-tip" *ngIf="irrigResult.recommendations?.length > 0">
+               {{ irrigResult.recommendations[0] }}
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ── ERROR ── -->
+      <div class="diag-zone error-state-diag" *ngIf="diagState === 'error'">
+        <div class="error-icon"></div>
+        <h3>Analyse impossible</h3>
+        <p>{{ error }}</p>
+        <button class="btn-retry-full" (click)="resetDiagnosis()">Réessayer</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Loading -->
+<div class="page-loading" *ngIf="isLoading">
+  <div class="loading-spinner"></div>
+  <p>Chargement de la parcelle...</p>
+</div>

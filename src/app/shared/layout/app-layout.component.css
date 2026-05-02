@@ -1,0 +1,201 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.layout-wrapper {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f8faf8;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 240px;
+  background: linear-gradient(180deg, #1a5c2e 0%, #0f3d1e 100%);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 100;
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+.sidebar-collapsed .sidebar { width: 64px; }
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.brand-icon { font-size: 28px; flex-shrink: 0; }
+.brand-name {
+  font-size: 22px;
+  font-weight: 800;
+  color: white;
+  white-space: nowrap;
+}
+
+/* ── Nav ── */
+.sidebar-nav {
+  flex: 1;
+  padding: 12px 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  margin-bottom: 2px;
+  transition: all 0.2s;
+  position: relative;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.nav-item:hover  { background: rgba(255,255,255,0.1); color: white; }
+.nav-item.active { background: rgba(255,255,255,0.2); color: white; font-weight: 600; }
+
+.nav-icon { font-size: 18px; flex-shrink: 0; width: 24px; text-align: center; }
+.nav-label { font-size: 13px; }
+
+.nav-badge {
+  position: absolute;
+  right: 8px;
+  background: #ef4444;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+
+/* ── Sidebar footer ── */
+.sidebar-footer {
+  padding: 12px 10px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.farmer-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.farmer-avatar {
+  width: 32px; height: 32px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+  color: white; flex-shrink: 0;
+}
+
+.farmer-name {
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-logout {
+  background: none; border: none;
+  cursor: pointer; font-size: 18px;
+  padding: 4px; border-radius: 6px;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-logout:hover { background: rgba(255,255,255,0.1); }
+
+/* ── Main content ── */
+.main-content {
+  margin-left: 240px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  transition: margin-left 0.3s ease;
+  min-height: 100vh;
+}
+
+.sidebar-collapsed .main-content { margin-left: 64px; }
+
+/* ── Topbar ── */
+.topbar {
+  height: 56px;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 99;
+}
+
+.btn-toggle {
+  background: none; border: none;
+  cursor: pointer; font-size: 14px;
+  color: #6b7280; padding: 6px 10px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.btn-toggle:hover { background: #f3f4f6; }
+
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.topbar-farmer { font-size: 14px; color: #374151; font-weight: 500; }
+
+.topbar-alerts {
+  position: relative;
+  font-size: 20px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.alert-badge {
+  position: absolute;
+  top: -4px; right: -6px;
+  background: #ef4444;
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 8px;
+  min-width: 16px;
+  text-align: center;
+}
+
+/* ── Page content ── */
+.page-content {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .sidebar { width: 64px; }
+  .sidebar-collapsed .sidebar { width: 0; }
+  .main-content { margin-left: 64px; }
+  .sidebar-collapsed .main-content { margin-left: 0; }
+  .brand-name, .nav-label, .farmer-name { display: none; }
+  .page-content { padding: 16px; }
+}

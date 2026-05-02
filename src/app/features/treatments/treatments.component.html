@@ -1,0 +1,134 @@
+<div class="page-container">
+  <div class="page-header-row">
+    <div>
+      <h1> Traitements / المعالجات</h1>
+      <p class="page-sub">Suivi des traitements et délais avant récolte</p>
+    </div>
+    <button class="btn-add" (click)="showForm = !showForm">
+      {{ showForm ? ' Annuler' : ' Enregistrer traitement' }}
+    </button>
+  </div>
+
+  <div class="form-card" *ngIf="showForm">
+    <h3> Nouveau traitement</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Parcelle</label>
+        <select [(ngModel)]="form.parcel_id" name="parcel">
+          <option *ngFor="let p of parcels" [value]="p.id">{{ p.name }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Produit / المنتج</label>
+        <input type="text" [(ngModel)]="form.product"
+               placeholder="Ex: Mancozèbe 80 WP" name="product"/>
+      </div>
+      <div class="form-group">
+        <label>Dose / الجرعة</label>
+        <input type="text" [(ngModel)]="form.dose"
+               placeholder="Ex: 2.5 kg/ha" name="dose"/>
+      </div>
+      <div class="form-group">
+        <label>Date application</label>
+        <input type="date" [(ngModel)]="form.date_applied" name="date"/>
+      </div>
+      <div class="form-group">
+        <label>Maladie traitée</label>
+        <input type="text" [(ngModel)]="form.disease_treated"
+               placeholder="Ex: Mildiou" name="disease"/>
+      </div>
+      <div class="form-group">
+        <label>DAR (jours)</label>
+        <input type="number" [(ngModel)]="form.dar_days" name="dar"/>
+      </div>
+    </div>
+    <button class="btn-submit" (click)="logTreatment()">
+       Enregistrer
+    </button>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn" [class.active]="activeTab==='reminders'"
+            (click)="activeTab='reminders'">
+       Rappels DAR
+      <span class="tab-count" *ngIf="darReminders.length">
+        {{ darReminders.length }}
+      </span>
+    </button>
+    <button class="tab-btn" [class.active]="activeTab==='log'"
+            (click)="activeTab='log'"> Historique</button>
+    <button class="tab-btn" [class.active]="activeTab==='pesticides'"
+            (click)="activeTab='pesticides'"> Pesticides</button>
+  </div>
+
+  <div *ngIf="activeTab === 'reminders'">
+    <div class="empty-state" *ngIf="darReminders.length === 0">
+      <span></span><p>Aucun rappel DAR actif</p>
+    </div>
+    <div class="dar-card"
+         *ngFor="let r of darReminders"
+         [class]="'dar-' + getDarStatus(r.days_remaining)">
+      <div class="dar-info">
+        <h3>{{ r.parcel_name }} — {{ r.product }}</h3>
+        <p>Appliqué le {{ r.date_applied | date:'dd/MM/yyyy' }}</p>
+        <p>Récolte autorisée : {{ r.harvest_allowed_from | date:'dd/MM/yyyy' }}</p>
+      </div>
+      <div class="dar-countdown">
+        <span class="dar-days">{{ r.days_remaining }}</span>
+        <span class="dar-unit">jours restants</span>
+        <span class="dar-safe" *ngIf="r.is_safe"> Sûr</span>
+        <span class="dar-wait" *ngIf="!r.is_safe"> Attendre</span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="activeTab === 'log'">
+    <div class="parcel-selector">
+      <button class="parcel-tab"
+              *ngFor="let p of parcels"
+              [class.active]="selectedParcelId === p.id"
+              (click)="selectedParcelId=p.id; loadLog(p.id)">
+         {{ p.name }}
+      </button>
+    </div>
+    <div class="log-list">
+      <div class="log-item" *ngFor="let t of treatmentLog">
+        <div class="log-icon"></div>
+        <div class="log-info">
+          <strong>{{ t.product }}</strong>
+          <span>{{ t.dose }}</span>
+          <span>{{ t.date_applied | date:'dd/MM/yyyy' }}</span>
+          <span *ngIf="t.disease_treated"> {{ t.disease_treated }}</span>
+        </div>
+        <div class="log-dar">
+          DAR: {{ t.dar_days }}j
+        </div>
+      </div>
+      <div class="empty-state" *ngIf="treatmentLog.length === 0">
+        <span></span><p>Aucun traitement enregistré</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="activeTab === 'pesticides'">
+    <div class="pesticide-card"
+         *ngFor="let p of pesticides">
+      <div class="pest-header">
+        <h3>{{ p.name }}</h3>
+        <span class="pest-homo">{{ p.homologation }}</span>
+      </div>
+      <div class="pest-details">
+        <span> {{ p.active_substance }}</span>
+        <span> {{ p.dose }}</span>
+        <span> DAR: {{ p.dar_days }}j</span>
+        <span> Classe {{ p.toxicity_class }}</span>
+      </div>
+      <div class="pest-targets">
+        <span class="target-tag"
+              *ngFor="let d of p.target_diseases">
+          {{ d }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

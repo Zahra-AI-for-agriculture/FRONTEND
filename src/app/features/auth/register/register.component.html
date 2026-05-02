@@ -1,0 +1,318 @@
+<div class="register-wrapper">
+
+  <!-- Barre de progression -->
+  <div class="progress-bar">
+    <div class="progress-brand">
+      <span></span>
+      <span class="brand-text">Zahra</span>
+    </div>
+
+    <div class="steps-indicator">
+      <div class="step-item"
+           [class.active]="currentStep >= 1"
+           [class.done]="currentStep > 1">
+        <div class="step-circle">
+          <span *ngIf="currentStep <= 1">1</span>
+          <span *ngIf="currentStep > 1">✓</span>
+        </div>
+        <span class="step-label">Mon profil</span>
+      </div>
+      <div class="step-line" [class.active]="currentStep > 1"></div>
+      <div class="step-item"
+           [class.active]="currentStep >= 2"
+           [class.done]="currentStep > 2">
+        <div class="step-circle">
+          <span *ngIf="currentStep <= 2">2</span>
+          <span *ngIf="currentStep > 2">✓</span>
+        </div>
+        <span class="step-label">Ma région</span>
+      </div>
+      <div class="step-line" [class.active]="currentStep > 2"></div>
+      <div class="step-item" [class.active]="currentStep >= 3">
+        <div class="step-circle">3</div>
+        <span class="step-label">Ma parcelle</span>
+      </div>
+    </div>
+
+    <div class="progress-login">
+      <span>Déjà un compte ?</span>
+      <a routerLink="/login">Se connecter</a>
+    </div>
+  </div>
+
+  <!-- Contenu -->
+  <div class="register-content">
+
+    <!-- ══ ÉTAPE 1 — Profil ══ -->
+    <div class="step-panel" *ngIf="currentStep === 1">
+      <div class="step-header">
+        <h2> Bienvenue sur Zahra</h2>
+        <p>Créons votre profil agriculteur</p>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Nom complet</label>
+          <input type="text" [(ngModel)]="formData.name"
+                 placeholder="Ex: Ahmed Ben Salah"
+                 [class.valid]="formData.name.length >= 2"/>
+        </div>
+
+        <div class="form-group full">
+          <label> Numéro de téléphone</label>
+          <input type="tel" [(ngModel)]="formData.phone"
+                 placeholder="Ex: 55000001"
+                 [class.valid]="formData.phone.length >= 8"/>
+        </div>
+
+        <div class="form-group">
+          <label> Mot de passe</label>
+          <div class="input-toggle">
+            <input [type]="showPassword ? 'text' : 'password'"
+                   [(ngModel)]="formData.password"
+                   placeholder="Min. 6 caractères"
+                   [class.valid]="formData.password.length >= 6"/>
+            <button type="button" class="toggle-btn"
+                    (click)="togglePassword()">
+              {{ showPassword ? '' : '️' }}
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label> Confirmer mot de passe</label>
+          <input type="password"
+                 [(ngModel)]="formData.confirmPassword"
+                 placeholder="Répéter le mot de passe"
+                 [class.valid]="formData.confirmPassword === formData.password && formData.confirmPassword.length >= 6"
+                 [class.field-error]="formData.confirmPassword.length > 0 && formData.confirmPassword !== formData.password"/>
+          <small class="error-hint"
+                 *ngIf="formData.confirmPassword.length > 0 && formData.confirmPassword !== formData.password">
+            Les mots de passe ne correspondent pas
+          </small>
+        </div>
+
+        <div class="form-group full">
+          <label> Langue préférée</label>
+          <div class="lang-toggle">
+            <button type="button"
+                    [class.selected]="formData.language_preference === 'fr'"
+                    (click)="formData.language_preference = 'fr'">
+               Français
+            </button>
+            <button type="button"
+                    [class.selected]="formData.language_preference === 'ar'"
+                    (click)="formData.language_preference = 'ar'">
+               العربية
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="error-msg" *ngIf="errorMessage">️ {{ errorMessage }}</div>
+
+      <div class="step-actions">
+        <button class="btn-primary" (click)="nextStep()"
+                [disabled]="!isStep1Valid">
+          Continuer → Ma région
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ ÉTAPE 2 — Région & Cultures ══ -->
+    <div class="step-panel" *ngIf="currentStep === 2">
+      <div class="step-header">
+        <h2>️ Où se trouve votre exploitation ?</h2>
+        <p>Sélectionnez votre zone agroclimatique</p>
+      </div>
+
+      <div class="zones-grid">
+        <div class="zone-card"
+             *ngFor="let zone of zones"
+             [class.selected]="isZoneSelected(zone)"
+             (click)="selectZone(zone)">
+          <div class="zone-emoji">{{ zone.emoji }}</div>
+          <div class="zone-info">
+            <strong>{{ zone.label }}</strong>
+            <small>{{ zone.gouvernorats }}</small>
+            <div class="zone-crops">
+              <span class="crop-badge" *ngFor="let c of zone.cultures">{{ c }}</span>
+            </div>
+          </div>
+          <div class="zone-check" *ngIf="isZoneSelected(zone)">✓</div>
+        </div>
+      </div>
+
+      <div class="culture-section" *ngIf="formData.region_zone">
+        <h3> Votre culture principale</h3>
+        <div class="cultures-grid">
+          <button type="button"
+                  class="culture-btn"
+                  *ngFor="let c of cultures"
+                  [class.selected]="isCultureSelected(c.value)"
+                  (click)="selectCulture(c.value)">
+            <span>{{ c.emoji }}</span>
+            <span>{{ c.value }}</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="error-msg" *ngIf="errorMessage">️ {{ errorMessage }}</div>
+
+      <div class="step-actions">
+        <button class="btn-secondary" (click)="prevStep()">← Retour</button>
+        <button class="btn-primary" (click)="nextStep()"
+                [disabled]="!isStep2Valid">
+          Continuer → Ma parcelle
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ ÉTAPE 3 — Carte satellite + M4 ══ -->
+    <div class="step-panel step-map" *ngIf="currentStep === 3">
+      <div class="step-header">
+        <h2>️ Localisez votre parcelle</h2>
+        <p>Cliquez sur votre champ — le modèle M4 (SAM) délimitera
+           automatiquement votre parcelle</p>
+      </div>
+
+      <!-- Parcelles déjà validées -->
+      <div class="parcels-validated" *ngIf="parcels.length > 0">
+        <span class="parcels-label"> Parcelles validées :</span>
+        <div class="parcels-list">
+          <span class="parcel-chip" *ngFor="let p of parcels">
+            {{ p.name }} — {{ p.area_ha }} ha
+          </span>
+        </div>
+      </div>
+
+      <!-- Bandeau statut -->
+      <div class="map-status"
+           [class.status-ready]="!formData.parcel_lat && !segmentationLoading"
+           [class.status-loading]="segmentationLoading"
+           [class.status-done]="segmentationDone && !segmentationLoading && !segmentationError && !isEditing"
+           [class.status-error]="!!segmentationError && !segmentationLoading"
+           [class.status-editing]="isEditing">
+        <span *ngIf="!formData.parcel_lat && !segmentationLoading">
+           Cliquez sur la carte pour sélectionner votre parcelle
+        </span>
+        <span *ngIf="segmentationLoading">
+           Modèle M4 (SAM) en cours d'analyse...
+        </span>
+        <span *ngIf="segmentationDone && !segmentationLoading && !segmentationError && !isEditing">
+           Parcelle délimitée par l'IA —
+          {{ formData.parcel_area_ha }} ha détectés
+        </span>
+        <span *ngIf="segmentationError && !segmentationLoading">
+          ️ {{ segmentationError }}
+        </span>
+        <span *ngIf="isEditing">
+          ️ Mode édition — glissez les points pour ajuster le contour
+        </span>
+      </div>
+
+      <!-- Carte Leaflet -->
+      <div id="parcel-map" class="leaflet-map"></div>
+
+      <!-- Dialog : ajouter une autre parcelle ? -->
+      <div class="add-another-dialog" *ngIf="showAddAnotherDialog && lastParcel">
+        <div class="dialog-content">
+          <p> <strong>{{ lastParcel?.name }}</strong>
+             ajoutée ({{ lastParcel?.area_ha }} ha)</p>
+          <p>Voulez-vous ajouter une autre parcelle ?</p>
+          <div class="edit-buttons">
+            <button type="button" class="btn-confirm-edit"
+                    (click)="addAnotherParcel()">
+               Ajouter une parcelle
+            </button>
+            <button type="button" class="btn-cancel-edit"
+                    (click)="finishParcelSelection()">
+               Non, créer mon compte
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Infos parcelle après segmentation -->
+      <div class="parcel-info"
+           *ngIf="(segmentationDone || segmentationError) && !segmentationLoading && !showAddAnotherDialog">
+        <div class="parcel-info-grid">
+
+          <div class="info-item">
+            <label>Nom de la parcelle</label>
+            <input type="text"
+                   [(ngModel)]="formData.parcel_name"
+                   placeholder="Ma première parcelle"/>
+          </div>
+
+          <div class="info-item">
+            <label>Superficie</label>
+            <div class="info-value">
+              {{ formData.parcel_area_ha || '—' }} ha
+              <span class="badge-ai" *ngIf="segmentationDone && !segmentationError">M4 IA ️</span>
+              <span class="badge-approx" *ngIf="segmentationError">estimée</span>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <label>Culture</label>
+            <div class="info-value">{{ formData.main_crop }}</div>
+          </div>
+
+          <div class="info-item">
+            <label>Coordonnées</label>
+            <div class="info-value coords">
+              {{ formData.parcel_lat | number:'1.4-4' }}°N,
+              {{ formData.parcel_lng | number:'1.4-4' }}°E
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Actions parcelle -->
+        <div class="parcel-actions">
+          <ng-container *ngIf="!isEditing">
+            <button type="button" class="btn-edit" (click)="enableEditing()">
+              ️ Rectifier le contour
+            </button>
+            <button type="button" class="btn-validate-parcel"
+                    (click)="validateCurrentParcel()">
+               Valider cette parcelle
+            </button>
+          </ng-container>
+
+          <ng-container *ngIf="isEditing">
+            <div class="edit-hint">
+              ️ Glissez les points blancs pour ajuster le contour
+            </div>
+            <div class="edit-buttons">
+              <button type="button" class="btn-confirm-edit"
+                      (click)="confirmEditing()">
+                 Valider les modifications
+              </button>
+              <button type="button" class="btn-cancel-edit"
+                      (click)="cancelEditing()">
+                ️ Annuler
+              </button>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="error-msg" *ngIf="errorMessage">️ {{ errorMessage }}</div>
+
+      <div class="step-actions">
+        <button class="btn-secondary" (click)="prevStep()">← Retour</button>
+        <button class="btn-primary btn-submit"
+                *ngIf="parcels.length > 0 && !showAddAnotherDialog"
+                (click)="onSubmit()"
+                [disabled]="isLoading || isEditing">
+          {{ isLoading
+            ? ' Création...'
+            : ' Créer mon compte Zahra (' + parcels.length + ' parcelle' + (parcels.length > 1 ? 's' : '') + ')' }}
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
